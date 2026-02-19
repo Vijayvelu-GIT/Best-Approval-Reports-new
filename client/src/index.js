@@ -3,11 +3,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import DashboardProvider from './Interface/DashboardProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <DashboardProvider>
+      <App />
+    </DashboardProvider>
   </React.StrictMode>
 );
 

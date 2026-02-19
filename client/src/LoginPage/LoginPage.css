@@ -1,0 +1,280 @@
+@import "../../node_modules/@syncfusion/ej2-base/styles/fluent.css";
+@import "../../node_modules/@syncfusion/ej2-inputs/styles/fluent.css";
+@import "../../node_modules/@syncfusion/ej2-react-dropdowns/styles/fluent.css";
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ================= CONTAINER ================= */
+
+.login-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b8bfd6;
+}
+
+/* ================= CARD ================= */
+
+.login-wrapper {
+  display: flex;
+  width: 850px;
+  height: 350px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  background: white;
+}
+
+/* ================= LEFT SIDE ================= */
+
+.login-left {
+  width: 40%;
+  background-color: #e5e5e5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-logo {
+  width: 250px;
+  object-fit: contain;
+}
+
+/* ================= RIGHT SIDE ================= */
+
+.login-right {
+  width: 50%;
+  background-color: #5f7ea5;
+  padding: 40px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-right h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+/* ================= FORM ================= */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+}
+
+/* ================= INPUT & DROPDOWN ================= */
+
+.login-right .e-input-group,
+.login-right .e-control-wrapper {
+  width: 100%;
+  height: 30px;
+  border-radius: 6px !important;
+}
+
+.login-right .e-input {
+  height: 45px;
+}
+
+/* .login-right .e-input-group.e-outline {
+  border: 1px solid #ffffff !important;
+} */
+
+/* .login-right .e-input-group.e-outline:hover {
+  border: 1px solid #2563eb !important;
+} */
+
+/* .login-right .e-input-group.e-outline.e-input-focus {
+  border: 1px solid #2563eb !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+} */
+
+/* Float label color */
+.login-right .e-float-text,
+.login-right .e-input-group .e-float-text.e-label-top {
+  color: #ffffff !important;
+}
+
+/* ================= LOGIN BUTTON ================= */
+
+.login-btn {
+  background-color: #e64343 !important;
+  color: white !important;
+  border-radius: 6px !important;
+  height: 35px;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+
+
+/* ================= SUBMIT & BACK BUTTONS ================= */
+
+
+
+
+/* Success button */
+.e-success {
+  background-color: #16a34a !important;
+  color: white !important;
+}
+
+/* Danger button */
+.e-danger {
+  background-color: #dc2626 !important;
+  color: white !important;
+}
+
+/* Hover effect */
+.e-success:hover {
+  background-color: #15803d !important;
+}
+
+.e-danger:hover {
+  background-color: #b91c1c !important;
+}
+
+/* Input text color */
+.login-right .e-input {
+  color: #ffffff !important;
+}
+
+/* Placeholder (float label) */
+.login-right .e-float-text {
+  color: #757c85 !important;
+}
+
+/* On focus */
+.login-right .e-input-group.e-input-focus .e-float-text {
+  color: #ffffff !important;
+}
+
+.login-right .e-input-group {
+  margin-top: 8px;   
+}
+
+
+
+
+.e-dropdownbase .e-active {
+  background-color: #1976d2 !important;
+  color: #ffffff !important;
+}
+
+/* ================= ADVANCED DROPDOWN POPUP ================= */
+
+/* Popup container */
+.e-dropdown-popup {
+  border-radius: 12px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25) !important;
+  border: none !important;
+  padding: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Popup background */
+.e-popup {
+  background: #ffffff !important;
+}
+
+/* Search box area */
+.e-dropdown-popup .e-filter-parent {
+  padding: 8px 10px !important;
+  border-bottom: 1px solid #e5e7eb;
+  background-color: #f8fafc;
+}
+
+/* Search input */
+.e-dropdown-popup .e-input {
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+}
+
+/* List items */
+.e-dropdownbase .e-list-item {
+  padding: 4px 8px !important;
+  border-radius: 8px;
+  margin: 4px 6px;
+  transition: all 0.2s ease-in-out;
+  font-size: 13px;
+}
+
+/* Hover effect */
+.e-dropdownbase .e-list-item:hover {
+  background-color: #e0f2fe !important;
+  color: #0f172a !important;
+}
+
+/* Selected item */
+.e-dropdownbase .e-active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+/* Scrollbar styling */
+.e-dropdown-popup .e-content {
+  max-height: 160px !important;
+  overflow-y: auto;
+}
+
+.e-dropdown-popup .e-content::-webkit-scrollbar {
+  width: 13px;
+}
+
+.e-dropdown-popup .e-content::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 2px;
+}
+
+
+
+
+
+.dropdown-buttons {
+  display: flex;
+  gap: 10px;
+  width: 75%;
+}
+
+/* Small button base */
+.small-btn {
+  font-size: 13px;
+  padding: 3px 9px !important;
+  border-radius: 6px;
+  height: 30px;
+}
+
+/* Submit button (Blue) */
+.submit-btn {
+  background-color: #e64343 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.submit-btn:hover {
+  background-color: #b44b4b !important;
+}
+
+/* Back button (Light Grey) */
+.back-btn {
+  background-color: #e0e0e0 !important;
+  color: #333 !important;
+  border: none !important;
+}
+
+.back-btn:hover {
+  background-color: #cfcfcf !important;
+}
+
+
+
