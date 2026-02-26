@@ -1,6 +1,6 @@
 const oracledb = require("oracledb");
 const dbconfig = require("./dbconfig");
-const crypto = require("crypto");
+
 
 async function getSelectedCompany(data, res) {
     let connection, sql, binds, options
@@ -9,7 +9,7 @@ async function getSelectedCompany(data, res) {
 
         sql = `select companyid from compmas`
 
-        binds = {  }
+        binds = {}
         options = {
             outFormat: oracledb.OUT_FORMAT_OBJECT,
         };
@@ -52,19 +52,13 @@ async function getFabricApproval(data, res) {
     try {
         connection = await oracledb.getConnection(dbconfig);
 
-        sql = `SELECT A.DOCID,A.DOCDATE,C.PARTYID,D.fabname,F.COLOR,B.srate RATE,A.approved,A.APPLEVEL,B.fordedetid ,a.fordemasid ,A.APPLEVEL + 1 applev,
-a.ordval,a.budgval budval, a.ordval-a.budgval  diff,a.profitmar prper,b.ordqty,b.olossper,b.prodqty
-FROM fordemas A,fordedet B,PARTYMAS C,fabmas D,COLORMAS F
-WHERE A.fordemasid=B.fordemasid AND A.PARTYID=C.PARTYMASID AND B.fabname=D.fabmasid(+)  AND B.COLOR=F.COLORMASID 
-and a.request='T'
-and a.approved='F'
-             AND (a.APPLEVEL + 1 =
-             (SELECT   DISTINCT b1.APPLEVEL
-                FROM   APPRMAS A1, APPRDET B1,compmas c1
-                WHERE   A1.APPRMASID = B1.APPRMASID
-                and a1.ename=c1.compmasid and c1.companyid=:ename
-                AND TSNAME = 'Fabric Order Entry.'
-                AND B1.APPUSER = :UNAM and a.apptype=a1.apptype) )order by 1`
+        sql = `SELECT A.DOCID,A.DOCDATE,C.PARTYID,D.FABNAME,F.COLOR,B.SRATE RATE,A.APPROVED,A.APPLEVEL,B.FORDEDETID ,
+        A.FORDEMASID ,A.APPLEVEL + 1 APPLEV,A.ORDVAL,A.BUDGVAL BUDVAL, A.ORDVAL-A.BUDGVAL  DIFF,A.PROFITMAR PRPER,
+        B.ORDQTY,B.OLOSSPER,B.PRODQTY,A.APPTYPE FAPPTYPE FROM FORDEMAS A,FORDEDET B,PARTYMAS C,FABMAS D,COLORMAS F 
+        WHERE A.FORDEMASID=B.FORDEMASID AND A.PARTYID=C.PARTYMASID AND B.FABNAME=D.FABMASID(+)  AND 
+        B.COLOR=F.COLORMASID AND A.REQUEST='T' AND A.APPROVED='F' AND (A.APPLEVEL + 1 = (SELECT DISTINCT B1.APPLEVEL 
+        FROM   APPRMAS A1, APPRDET B1,COMPMAS C1 WHERE   A1.APPRMASID = B1.APPRMASID AND A1.ENAME=C1.COMPMASID 
+        AND C1.COMPANYID=:ENAME  AND TSNAME = 'Fabric Order Entry.'  AND B1.APPUSER = :UNAM AND A.APPTYPE=A1.APPTYPE ))ORDER BY 1`
 
         binds = {
             ENAME: data.ENAME,
@@ -112,6 +106,9 @@ async function insertFabricApproval(data, res) {
     let connection;
 
     try {
+
+        // console.log("data => ", data)
+
         connection = await oracledb.getConnection(dbconfig);
 
         const records = data.selectedRecords;
@@ -124,64 +121,21 @@ async function insertFabricApproval(data, res) {
         }
 
 
-        const mailSql = `
-            INSERT INTO AXP_MAILJOBS
-            SELECT MAILJOB_SEQ.NEXTVAL,
-                   SYSDATE,
-                   MAILTO,MAILCC CC,
-                   'Fabric Order Approved - '||:docid||C.PARTYID,
-                   'Dear All,'||CHR(13)||CHR(13)||
-                   'Fabric Order Approved For your Reference'||
-                   CHR(13)||CHR(13)||CHR(13)||
-                   '**This is system generated mail, pls do not reply**',
-                   '','','','forde',:fordemasid,0,'','',''
-            FROM fordemas A,
-                 (SELECT B.MAILTO,B.MAILCC,A.compmasID
-                  FROM compmas A, compmail B
-                  WHERE A.compmasid=B.compmasid
-                  AND B.SCREEN='FABRIC ORDER ENTRY') B,
-                 PARTYMAS C
-            WHERE APPLEVEL = MAXLEVEL
-            AND fordemasid = :fordemasid
-            AND A.PARTYID = C.PARTYMASID
-            AND A.ENAME = B.COMPMASID
-        `;
-
-        const mailBinds = records.map(r => ({
-            docid: r.DOCID,
-            fordemasid: r.FORDEMASID
-        }));
-
-        await connection.executeMany(mailSql, mailBinds);
-
-
-        const updateAppLevelSql = `
-            UPDATE fordemas
-            SET APPLEVEL = :applev
-            WHERE fordemasid = :fordemasid
-        `;
+        const updateAppLevelSql = `UPDATE FORDEMAS SET APPLEVEL= :APPLEV WHERE FORDEMASID = :FORDEMASID`;
 
         const updateAppLevelBinds = records.map(r => ({
-            applev: r.APPLEV,
-            fordemasid: r.FORDEMASID
-        }));        
+            APPLEV: r.APPLEV,
+            FORDEMASID: r.FORDEMASID
+        }));
 
         await connection.executeMany(updateAppLevelSql, updateAppLevelBinds);
 
+        
 
 
         const insertHistorySql = `
-            INSERT INTO approval_history
-            (SNAME, MASTERID, APPLEVEL, APPUSER, APPDATE, TRANSID, DOCID)
-            VALUES
-            ('Fabric Order Entry.',
-             :fordemasid,
-             :applev,
-             :username,
-             SYSDATE,
-             'forde',
-             :docid)
-        `;
+            insert into approval_history (SNAME,MASTERID,APPLEVEL,APPUSER,APPDATE,TRANSID,DOCID) values 
+            ( 'Fabric Order Entry.' , :fordemasid , :applev , :username , SYSDATE  , 'forde'  , :docid )`;
 
         const insertHistoryBinds = records.map(r => ({
             fordemasid: r.FORDEMASID,
@@ -192,16 +146,10 @@ async function insertFabricApproval(data, res) {
 
         await connection.executeMany(insertHistorySql, insertHistoryBinds);
 
+        
 
 
-        const verifySql = `
-            UPDATE fordemas
-            SET verifyby = :username,
-                verifyon = SYSDATE
-            WHERE docid = :docid
-            AND applevel = 1
-            AND maxlevel = 3
-        `;
+        const verifySql = `update fordemas set verifyby=:username,verifyon= sysdate where docid=:docid and applevel=1 and maxlevel=3`;
 
         const verifyBinds = records.map(r => ({
             username: data.username,
@@ -210,44 +158,58 @@ async function insertFabricApproval(data, res) {
 
         await connection.executeMany(verifySql, verifyBinds);
 
+        
 
-        const forwardSql1 = `
-            UPDATE fordemas
-            SET forwardby = :username,
-                forwardon = SYSDATE
-            WHERE docid = :docid
-            AND applevel = 2
-            AND maxlevel = 3
-        `;
+
+        const forwardSql1 = `update fordemas set forwardby=:username,forwardon= sysdate where docid=:docid and applevel=2 and maxlevel=3`;
 
         await connection.executeMany(forwardSql1, verifyBinds);
 
+       
 
-        const forwardSql2 = `
-            UPDATE fordemas
-            SET forwardby = :username,
-                forwardon = SYSDATE
-            WHERE docid = :docid
-            AND applevel = 1
-            AND maxlevel = 2
-        `;
+
+        const forwardSql2 = `update fordemas set forwardby=:username,forwardon= sysdate where docid=:docid and applevel=1 and maxlevel=2`;
 
         await connection.executeMany(forwardSql2, verifyBinds);
 
+        
 
-        const finalApproveSql = `
-            UPDATE fordemas
-            SET fstatus = 'Approved',
-                approved = 'T',
-                apprby = :username,
-                appron = SYSDATE
-            WHERE docid = :docid
-            AND applevel = maxlevel
-        `;
+
+        const finalApproveSql = `update fordemas set fstatus='Approved',approved='T',apprby=:username,appron= sysdate where docid=:docid and applevel = maxlevel`;
 
         await connection.executeMany(finalApproveSql, verifyBinds);
 
+        
+
+
+        const mailSql = `INSERT INTO AXP_MAILJOBS ( SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE,MAILTO,MAILCC CC,'Fabric Order Approved - '||:DOCID ||C.PARTYID,'Dear All,
+        '||CHR(13)||CHR(13)||'Fabric Order Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','','','',
+        'forde',:FORDEMASID ,0,'','','' FROM fordemas A,(select B.MAILTO,B.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
+        B.SCREEN='FABRIC ORDER ENTRY'  and b.ordtype=:FAPPTYPE) B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND  fordemasid= :FORDEMASID AND A.PARTYID=C.PARTYMASID 
+        AND A.ENAME=B.COMPMASID )`;
+
+
+        // const mailSql = `INSERT INTO AXP_MAILJOBS SELECT  MAILJOB_SEQ.NEXTVAL,   SYSDATE,
+        // 'vijayvelu.git@gmail.com',  NULL, 'Fabric Order Approved - ' || :DOCID || ' - ' || C.PARTYID,
+        // 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Approved For your Reference' ||
+        // CHR(13) || CHR(13) || CHR(13) ||  '**This is system generated mail, pls do not reply**',
+        // '', '', '','forde', :FORDEMASID,  0, '', '', '' FROM FORDEMAS A JOIN PARTYMAS C ON 
+        // A.PARTYID = C.PARTYMASID  WHERE APPLEVEL = MAXLEVEL AND FORDEMASID = :FORDEMASID`;
+
+        const mailBinds = records.map(r => ({
+            DOCID: r.DOCID,
+            FORDEMASID: r.FORDEMASID,
+            FAPPTYPE: r.FAPPTYPE
+        }));
+
+        // console.log("mailBinds => ", mailBinds)
+
+        await connection.executeMany(mailSql, mailBinds);
+
+
+
         await connection.commit();
+
 
         console.log("All records processed successfully");
 
@@ -284,67 +246,29 @@ async function rejectFabricApproval(data, res) {
 
         const records = data.selectedRecords;
 
+        // console.log("data => ", data)
+
         if (!records || records.length === 0) {
             return res.status(400).json({
                 STATUS: false,
                 MESSAGE: "No records selected"
             });
-        }
+        }        
 
-        const mailSql = `
-            INSERT INTO AXP_MAILJOBS
-            SELECT MAILJOB_SEQ.NEXTVAL,
-                   SYSDATE,
-                   MAILTO,
-                   MAILCC,
-                   'Fabric Order Rejected - '||:docid||C.PARTYID,
-                   'Dear All,'||CHR(13)||CHR(13)||
-                   'Fabric Order Rejected For your Reference'||
-                   CHR(13)||CHR(13)||
-                   'Remarks ** '||:updmessage||CHR(13)||
-                   '**This is system generated mail, pls do not reply**',
-                   '','','','forde',:fordemasid,0,'','',''
-            FROM fordemas A,
-                 (SELECT B.MAILTO,B.MAILCC,A.compmasID
-                  FROM compmas A, compmail B
-                  WHERE A.compmasid=B.compmasid
-                  AND B.SCREEN='FABRIC ORDER ENTRY') B,
-                 PARTYMAS C
-            WHERE A.docid = :docid
-            AND A.PARTYID = C.PARTYMASID
-            AND A.ENAME = B.COMPMASID
-        `;
 
-        const mailBinds = records.map(r => ({
-            docid: r.DOCID,
-            updmessage: data.updmessage,
-            fordemasid: r.FORDEMASID
+        const rejUpdateSql5 = `update fordemas set fstatus='Rejected', approved = 'F', applevel = 0, apprby = null, appron = null,
+        rej='T', request = 'F', rejby= :USERNAME, rejon=sysdate where docid=:DOCID`
+
+        const binds5 = records.map(r => ({
+            USERNAME: data.username,
+            DOCID: r.DOCID
         }));
 
-        await connection.executeMany(mailSql, mailBinds);
+        const result5 = await connection.executeMany(rejUpdateSql5, binds5);
 
-        const rejectSql = `
-            UPDATE fordemas
-            SET fstatus = 'Rejected',
-                approved = 'F',
-                applevel = 0,
-                apprby = NULL,
-                appron = NULL,
-                rej = 'T',
-                request = 'F',
-                rejby = :username,
-                rejon = SYSDATE
-            WHERE docid = :docid
-        `;
+        // console.log("result5 => ", result5.rowsAffected)
 
-        const rejectBinds = records.map(r => ({
-            username: data.username,
-            docid: r.DOCID
-        }));
-
-        const result = await connection.executeMany(rejectSql, rejectBinds);
-
-        const totalAffected = result.rowsAffected;
+        const totalAffected = result5.rowsAffected;
 
         if (!totalAffected || totalAffected === 0) {
             await connection.rollback();
@@ -352,10 +276,50 @@ async function rejectFabricApproval(data, res) {
                 STATUS: false,
                 MESSAGE: "No records found to reject"
             });
-        }
+        }   
+
+        // console.log("checking 1")
+
+        // const rejectSql = `
+        //     UPDATE fordemas
+        //     SET fstatus = 'Rejected',
+        //         approved = 'F',
+        //         applevel = 0,
+        //         apprby = NULL,
+        //         appron = NULL,
+        //         rej = 'T',
+        //         request = 'F',
+        //         rejby = :username,
+        //         rejon = SYSDATE
+        //     WHERE docid = :docid
+        // `;
+
+        // const rejectBinds = records.map(r => ({
+        //     username: data.username,
+        //     docid: r.DOCID
+        // }));
+
+        // const result = await connection.executeMany(rejectSql, rejectBinds);
 
 
-        await connection.commit();
+        const mailSql = `INSERT INTO AXP_MAILJOBS ( SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE,MAILTO,MAILCC CC,'Fabric Order Rejected - '||:DOCID 
+        ||C.PARTYID,'Dear All,'||CHR(13)||CHR(13)|| 'Fabric Order Rejected For your Refernce'||CHR (13)|| CHR (13)||'Remarks ** '|| :REASON 
+        ||CHR (13)||  '**This is system generated mail, pls do not reply**','','','','forde', :FORDEMASID ,0,'','','' FROM 
+        fordemas A,(select B.MAILTO,B.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
+        B.SCREEN='FABRIC ORDER ENTRY' and b.ordtype = :FAPPTYPE) B,PARTYMAS C WHERE a.docid= :DOCID 
+        AND A.PARTYID = C.PARTYMASID AND A.ENAME=B.COMPMASID)`;
+
+        const mailBinds = records.map(r => ({
+            DOCID : r.DOCID,
+            REASON : data.reason,
+            FORDEMASID : r.FORDEMASID,
+            FAPPTYPE : r.FAPPTYPE
+        }));
+
+
+        await connection.executeMany(mailSql, mailBinds);
+
+        // await connection.commit();
 
         return res.status(200).json({
             STATUS: true,
@@ -385,5 +349,5 @@ async function rejectFabricApproval(data, res) {
 
 
 module.exports = {
-    getFabricApproval, insertFabricApproval, rejectFabricApproval,getSelectedCompany
+    getFabricApproval, insertFabricApproval, rejectFabricApproval, getSelectedCompany
 }

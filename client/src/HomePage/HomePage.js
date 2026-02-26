@@ -211,19 +211,30 @@
 
 
 
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { AppBarComponent } from "@syncfusion/ej2-react-navigations";
 import "./HomePage.css";
 import logo2 from "../Images/logo2.png";
 import { useNavigate } from "react-router-dom";
 import CtxDashboard from "../Interface/Dashboard-Context";
+import { getFabricApproval } from "../serverCommication/ServerPostApi"
+import { User } from "lucide-react";
+
 
 export default function Home() {
     const navigate = useNavigate();
     const dashboardCtx = useContext(CtxDashboard);
+    const serverIp = dashboardCtx.serverIp;
+
 
     console.log("dashboardCtx.isLoggedIn", +dashboardCtx.isLoggedIn);
+
+    const [fabCount, setFabCount] = useState(0);
+
+
+
+
     useEffect(() => {
         console.log("UseEffect dashboardCtx.isLoggedIn", +dashboardCtx.isLoggedIn);
         if (!(+dashboardCtx.isLoggedIn)) {
@@ -238,6 +249,13 @@ export default function Home() {
         }
     };
 
+    const handleCompanyChange = () => {
+        navigate("/", {
+            state: { companySelect: true },
+            replace: true
+        });
+    };
+
     const handleLogout = () => {
         // localStorage.clear();
         dashboardCtx.updateUsrName({
@@ -247,6 +265,35 @@ export default function Home() {
         });
         navigate("/");
     };
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+            try {
+                const data = {
+                    ENAME: dashboardCtx.selectedCompany,
+                    UNAM: dashboardCtx.userName
+                }
+                const result = await getFabricApproval(serverIp, data);
+                console.log("Result:", result);
+
+                if (result.MESSAGE === 'Success') {
+                    const apiData = result.data;
+                    const uniqueDocIds = [...new Set(apiData.map(item => item.DOCID))];
+                    const count = uniqueDocIds.length;
+                    // console.log("count => ", count)
+                    setFabCount(count)
+
+                } else {
+                    // alert("")
+                }
+            } catch (error) {
+                console.error("Error fetching fabric approval:", error);
+            }
+        };
+        fetchData();
+
+    }, []);
 
     return (
         <div className="layout-container">
@@ -261,6 +308,21 @@ export default function Home() {
                     </div>
 
                     <div className="right-section">
+
+                        <div className="user-info">
+                            {/* <span className="e-icons e-user user-icon"></span> */}
+                            <User size={18} className="user-icon" />
+                            <span className="username-text">{dashboardCtx.userName}</span>
+                        </div>
+
+                        <ButtonComponent
+                            content="Company"
+                            cssClass="company-button"
+                            iconCss="e-icons e-building"
+                            iconPosition="Left"
+                            onClick={handleCompanyChange}
+                        />
+
                         <ButtonComponent
                             content="Logout"
                             cssClass="logout-button"
@@ -280,7 +342,8 @@ export default function Home() {
                     className="dashboard-card card-indigo"
                     onClick={() => navigateTo("Fabric")}
                 >
-                    Fabric Order Approval
+                    Fabric Order Approval  ( <span>{fabCount}</span>  )
+
                 </div>
 
                 <div

@@ -229,8 +229,29 @@
 
 /* Right */
 .right-section {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f3f6fb;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.user-icon {
+    font-size: 16px;
+    color: #0746bb;
+}
+
+.username-text {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1b1b1b;
 }
 
 /* Logout Button */
@@ -311,6 +332,19 @@
 .card-slate {
   background: #c99abb;
   color: #3b1e39;
+}
+
+.company-button.e-btn {
+  height: 36px;
+  border-radius: 6px !important;
+  background: #1c929b !important;
+  color: white !important;
+  /* margin-left: 10px; */
+  text-align: center;
+}
+
+.company-button:hover {
+  background: #1dd8c8 !important;
 }
 
 /* ================= Responsive ================= */

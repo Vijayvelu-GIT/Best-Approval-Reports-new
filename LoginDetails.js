@@ -1,10 +1,10 @@
 const oracledb = require("oracledb");
 const dbconfig = require("./dbconfig");
-const crypto = require("crypto");
+// const crypto = require("crypto");
 
-function md5Hash(text) {
-  return crypto.createHash("md5").update(text).digest("hex");
-}
+// function md5Hash(text) {
+//   return crypto.createHash("md5").update(text).digest("hex");
+// }
 
 async function login(data, res) {
     let connection, sql, binds, options

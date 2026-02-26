@@ -95,7 +95,8 @@ export const rejectFabricApproval = async (serverIp, userDet) => {
         body: JSON.stringify(userDet),
       }
     );
-    return response;
+    const jsonData = await response.json();
+    return jsonData;
   } catch (e) {
     console.log(e.message);
     return e.message;
