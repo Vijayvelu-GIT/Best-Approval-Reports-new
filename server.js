@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 
-const port = 5056;
+const port = 5070;
 
 app.post("/api/loginDetails", (req, res) => {
   // console.log("req.params => ", req.body)

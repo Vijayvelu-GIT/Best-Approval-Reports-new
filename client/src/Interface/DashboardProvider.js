@@ -6,7 +6,7 @@ const DashboardProvider = (props) => {
 
   const [userName, setUserName] = useState(localStorage.getItem("DashBoardUserName"));
   const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("DashBoardisLoggedIn"));
-  const [serverIp, setServerIp] = useState(localStorage.getItem("DashBoardServerIp") || "http://localhost:5056");
+  const [serverIp, setServerIp] = useState(localStorage.getItem("DashBoardServerIp") || "http://localhost:5070");
   const [selectedCompany, setSelectedCompany] = useState(localStorage.getItem("SelectedCompany"));
   const [exportermasid, setExporterMasId] = useState(localStorage.getItem("ExporterMasId") );
   const [prefix, setPrefix] = useState(localStorage.getItem("Prefix"));

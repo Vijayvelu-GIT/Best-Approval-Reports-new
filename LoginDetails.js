@@ -9,9 +9,9 @@ const dbconfig = require("./dbconfig");
 async function login(data, res) {
     let connection, sql, binds, options
     try {
-        console.log("data => ", data )
+        // console.log("data => ", data );
         const hashedPassword = data.password;
-        console.log("hashedPassword => ",hashedPassword)
+        // console.log("hashedPassword => ",hashedPassword)
 
         connection = await oracledb.getConnection(dbconfig);
 
