@@ -215,7 +215,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { AppBarComponent } from "@syncfusion/ej2-react-navigations";
 import "./HomePage.css";
+// import logo2 from "../Images/logo2.png";
 import logo2 from "../Images/logo2.png";
+
 import { useNavigate } from "react-router-dom";
 import CtxDashboard from "../Interface/Dashboard-Context";
 import { getFabricApproval } from "../serverCommication/ServerPostApi"
@@ -246,6 +248,10 @@ export default function Home() {
         console.log("Navigate to:", screen);
         if (screen === "Fabric") {
             navigate("/Fabric")
+        }
+
+        if (screen === "Yarn") {
+            navigate("/YarnPo")
         }
     };
 

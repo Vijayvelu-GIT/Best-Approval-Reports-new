@@ -19,11 +19,12 @@ import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { AppBarComponent } from "@syncfusion/ej2-react-navigations";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
 import "./FabricOrderApproval.css";
-import logo2 from "../Images/logo2.png";
+// import logo2 from "../Images/logo2.png";
+import logo2 from "../../Images/logo2.png";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import { getFabricApproval, insertFabricApproval, rejectFabricApproval } from "../serverCommication/ServerPostApi"
-import CtxDashboard from "../Interface/Dashboard-Context"
+import { getFabricApproval, insertFabricApproval, rejectFabricApproval } from "../../serverCommication/ServerPostApi"
+import CtxDashboard from "../../Interface/Dashboard-Context"
 import { User } from "lucide-react";
 
 
@@ -217,16 +218,16 @@ export default function FabricApproval() {
         // console.log("data => ", data)
 
         rejectFabricApproval(serverIp, data).then((result) => {
-                // console.log("result => ", result)
-                if (result.STATUS === true) {
-                    setRejdialogVisible(false);
-                    alert(result.MESSAGE);
-                    setRejectReason("");
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 100);
-                } 
-            })
+            // console.log("result => ", result)
+            if (result.STATUS === true) {
+                setRejdialogVisible(false);
+                alert(result.MESSAGE);
+                setRejectReason("");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
+            }
+        })
             .catch((error) => {
                 console.error(error);
                 setRejdialogVisible(false);
@@ -256,6 +257,7 @@ export default function FabricApproval() {
     // Multiple check box Select :----------------------------------------
 
     const onRowSelecting = (args) => {
+        if (!gridRef.current) return;
         if (isSelectingRef.current) return;
         isSelectingRef.current = true;
         const grid = gridRef.current;
@@ -283,8 +285,10 @@ export default function FabricApproval() {
     // Multiple check box Deselect :----------------------------------------
 
     const onRowDeselected = (args) => {
-        const deselectedDocId = args.data.DOCID;
+        if (!gridRef.current) return;
         const grid = gridRef.current;
+        if (!args || !args.data) return;
+        const deselectedDocId = args.data.DOCID;
         grid.getCurrentViewRecords().forEach((record, index) => {
             if (record.DOCID === deselectedDocId) {
                 grid.selectRows(grid.getSelectedRowIndexes().filter(i =>

@@ -3,7 +3,8 @@ import './App.css';
 import { registerLicense } from '@syncfusion/ej2-base';
 import LoginPage from "./LoginPage/LoginPage"
 import HomePage from "./HomePage/HomePage";
-import FabricOrderApproval from "./Pages/FabricOrderApproval"
+import FabricOrderApproval from "./Pages/FabricOrderApproval/FabricOrderApproval"
+import YarnPoApproval from "./Pages/YarnPoApproval/YarnPoApproval"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // Register Syncfusion license key
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<LoginPage/>} />
         <Route path="/home" element={<HomePage/>} />
         <Route path="/Fabric" element={<FabricOrderApproval/>} />
+        <Route path="/YarnPo" element={<YarnPoApproval/>} />
       </Routes>
     </BrowserRouter>
   );

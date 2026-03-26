@@ -105,6 +105,32 @@ export const rejectFabricApproval = async (serverIp, userDet) => {
 
 
 
+// Yarn po Approval
+
+export const getYarnPoApproval = async (serverIp, data) => {
+  try {
+
+    const response = await fetch(
+      serverIp + "/api/getYarnPoApproval",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const jsonData = await response.json();
+    return jsonData;
+  } catch (e) {
+    console.log(e.message);
+    return e.message;
+  }
+};
+
+
+
+
 
 
 
