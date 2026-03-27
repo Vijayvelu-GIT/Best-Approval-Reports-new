@@ -220,7 +220,7 @@ import logo2 from "../Images/logo2.png";
 
 import { useNavigate } from "react-router-dom";
 import CtxDashboard from "../Interface/Dashboard-Context";
-import { getFabricApproval } from "../serverCommication/ServerPostApi"
+import { getFabricApproval, getYarnPoApproval } from "../serverCommication/ServerPostApi"
 import { User } from "lucide-react";
 
 
@@ -233,6 +233,7 @@ export default function Home() {
     console.log("dashboardCtx.isLoggedIn", +dashboardCtx.isLoggedIn);
 
     const [fabCount, setFabCount] = useState(0);
+    const [yarnPoCount, setYarnPoCount] = useState(0);
 
 
 
@@ -252,6 +253,10 @@ export default function Home() {
 
         if (screen === "Yarn") {
             navigate("/YarnPo")
+        }
+
+        if(screen === "General"){
+            navigate("/General")
         }
     };
 
@@ -281,7 +286,7 @@ export default function Home() {
                     UNAM: dashboardCtx.userName
                 }
                 const result = await getFabricApproval(serverIp, data);
-                console.log("Result:", result);
+                console.log("Result :", result);
 
                 if (result.MESSAGE === 'Success') {
                     const apiData = result.data;
@@ -289,10 +294,19 @@ export default function Home() {
                     const count = uniqueDocIds.length;
                     // console.log("count => ", count)
                     setFabCount(count)
+                } 
 
-                } else {
-                    // alert("")
-                }
+
+                const result2 = await getYarnPoApproval(serverIp, data);
+                console.log("Result2 :", result2);
+
+                if (result2.MESSAGE === 'Success') {
+                    const apiData = result2.data;
+                    const uniqueDocIds = [...new Set(apiData.map(item => item.DOCID))];
+                    const count = uniqueDocIds.length;
+                    // console.log("count => ", count)
+                    setYarnPoCount(count)
+                } 
             } catch (error) {
                 console.error("Error fetching fabric approval:", error);
             }
@@ -363,7 +377,7 @@ export default function Home() {
                     className="dashboard-card card-amber"
                     onClick={() => navigateTo("Yarn")}
                 >
-                    Yarn Approval
+                    Yarn Approval   ( <span>{yarnPoCount}</span>  )
                 </div>
 
                 <div

@@ -39,14 +39,27 @@ app.post("/api/rejectFabricApproval", (req, res) => {
 });
 
 
+// -------------------------------------------------------------------------------
+
+
 // yarn po approval
 
 app.post("/api/getYarnPoApproval", (req, res) => {
   // console.log("req.params => ", req.body)
-  YarnPoApproval.getYarnPoApproval(req.body, res)
+  YarnPoApproval.getYarnPoApprovalSelect(req.body, res)
 });
 
+app.post("/api/insertYarnPoApproval", (req, res) => {
+  //  console.log("req.params => ", req.body)
+  YarnPoApproval.insertYarnPoApproval(req.body, res)
+});
 
+// app.post("/api/insertYarnPoReject", (req, res) => {
+//   // console.log("req.params => ", req.body)
+//   YarnPoApproval.insertYarnPoReject(req.body, res)
+// });
+
+// -------------------------------------------------------------------------------
 
 app.listen(port, () => {
   console.log(`Server is running at ${port}`);

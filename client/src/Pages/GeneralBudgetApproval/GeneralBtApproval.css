@@ -1,0 +1,292 @@
+/* Page background */
+.page-containergeneral {
+    background: #f3f4f6;
+    min-height: 100vh;
+}
+
+/* AppBar */
+.custom-appbar {
+    background: #4f46e5 !important;
+    color: white;
+}
+
+.appbar-containergeneral {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.company-logo {
+    height: 48px;
+    margin-right: 10px;
+}
+
+.left-section {
+    display: flex;
+    align-items: center;
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+/* Logout button */
+.logout-button {
+    height: 36px;
+    border-radius: 6px !important;
+    background: #ef4444 !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+/* Grid wrapper with gap */
+.grid-wrapper {
+    margin: 30px;
+    /* width: 95%; */
+    /* 4 side gap */
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.page-title {
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+/* Syncfusion Grid border enhancement */
+.e-grid {
+    border: 1px solid #d1d5db !important;
+}
+
+/* Header style */
+.e-grid .e-headercell {
+    background-color: #f9fafb;
+    font-weight: 600;
+}
+
+
+/* FULL GRID BORDER */
+.e-grid {
+    border: 1px solid #cbd5e1 !important;
+}
+
+/* Header + Content cell vertical & horizontal lines */
+.e-grid .e-headercell,
+.e-grid .e-rowcell {
+    border-right: 1px solid #d1d5db !important;
+    border-bottom: 1px solid #d1d5db !important;
+}
+
+/* Remove extra last column double border */
+.e-grid .e-headercell:last-child,
+.e-grid .e-rowcell:last-child {
+    border-right: none !important;
+}
+
+/* Header background */
+.e-grid .e-headercell {
+    background-color: #f3f4f6;
+    font-weight: 600;
+}
+
+/* Make grid more clean */
+.e-grid .e-content {
+    border-bottom: 1px solid #cbd5e1 !important;
+}
+
+
+/* Button container */
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin: 20px 30px 30px 30px;
+}
+
+/* Common button size */
+.medium-btn {
+    height: 40px !important;
+    padding: 0 22px !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+}
+
+/* 🔵 Approval Button - Blue */
+.e-success {
+    background-color: #2563eb !important;
+    /* Professional Blue */
+    border-color: #2563eb !important;
+    color: #ffffff !important;
+}
+
+.e-success:hover {
+    background-color: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+}
+
+
+.e-danger {
+    background-color: #72716d !important;
+    border-color: #504e4e !important;
+    color: #ffffff !important;
+}
+
+.e-danger:hover {
+    background-color: #6d6868 !important;
+    border-color: #525050 !important;
+}
+
+
+.e-reject {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #fff !important;
+}
+
+.e-reject:hover {
+    background-color: #c82333 !important;
+}
+
+/* Approval dialoge style */
+
+.custom-dialog .e-dlg-header {
+    /* background: linear-gradient(135deg, #0d6efd, #0b5ed7); */
+    color: rgb(31, 76, 202);
+    font-size: 20px;
+    font-weight: 600;
+    padding: 8px 10px;
+}
+
+
+/* .custom-dialog .e-dlg-content {
+    padding: 20px;
+} */
+
+
+.dialog-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.dialog-icon {
+    font-size: 32px;
+    color: #f59e0b;
+}
+
+
+.dialog-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    /* margin-bottom: 5px; */
+}
+
+
+.dialog-message {
+    font-size: 14px;
+    color: #e60505;
+}
+
+
+.dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+
+.dialog-btn {
+    min-width: 90px;
+    border-radius: 6px !important;
+    font-weight: 500;
+}
+
+
+.custom-dialog .e-dlg-container {
+    backdrop-filter: blur(2px);
+}
+
+.custom-dialog {
+    border-radius: 10px;
+}
+
+.custom-dialog .e-dlg-content {
+    border-radius: 10px;
+}
+
+
+
+
+/* Reject Dialoge style*/
+
+.dialog-content-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.reject-textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    resize: none;
+    outline: none;
+}
+
+.reject-textarea:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 1px #dc2626;
+}
+
+
+/* Aggrigate */
+
+.e-grid .e-summaryrow {
+    background-color: #aca24e !important;
+    /* light yellow */
+    font-weight: bold;
+}
+
+
+.e-grid .e-summaryrow td {
+    border-top: 1px solid #1d27ad !important;
+}
+
+
+/* user info style */
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #f3f6fb;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+.user-icon {
+    font-size: 16px;
+    color: #0746bb;
+}
+
+.username-text {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1b1b1b;
+}

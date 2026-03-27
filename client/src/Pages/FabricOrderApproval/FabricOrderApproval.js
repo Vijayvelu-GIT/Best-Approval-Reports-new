@@ -13,7 +13,6 @@ import {
     AggregateDirective,
     AggregateColumnsDirective,
     AggregateColumnDirective
-
 } from "@syncfusion/ej2-react-grids";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { AppBarComponent } from "@syncfusion/ej2-react-navigations";

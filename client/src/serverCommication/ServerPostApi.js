@@ -130,6 +130,48 @@ export const getYarnPoApproval = async (serverIp, data) => {
 
 
 
+export const insertYarnPoApproval = async (serverIp, data) => {
+  try {
+    const response = await fetch(
+      serverIp + "/api/insertYarnPoApproval",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const jsonData = await response.json();
+    return jsonData;
+  } catch (e) {
+    console.log(e.message);
+    return e.message;
+  }
+};
+
+
+// export const rejectYarnPoApproval = async (serverIp, userDet) => {
+//   try {
+//     const response = await fetch(
+//       serverIp + "/api/insertYarnPoReject",
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(userDet),
+//       }
+//     );
+//     const jsonData = await response.json();
+//     return jsonData;
+//   } catch (e) {
+//     console.log(e.message);
+//     return e.message;
+//   }
+// };
+
+
 
 
 
