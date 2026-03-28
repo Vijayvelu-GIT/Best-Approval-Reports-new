@@ -3,9 +3,10 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
-const loginDetails = require("./LoginDetails")
-const FabricApproval = require("./FabricOrdApproval")
-const YarnPoApproval = require("./YarnPoApproval")
+const loginDetails = require("./LoginDetails");
+const FabricApproval = require("./FabricOrdApproval");
+const YarnPoApproval = require("./YarnPoApproval");
+const GeneralBudApproval = require("./GeneralBudApproval");
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -28,13 +29,11 @@ app.post("/api/getFabricApproval", (req, res) => {
   FabricApproval.getFabricApproval(req.body, res)
 });
 
-app.post("/api/insertFabricApproval", (req, res) => {
-  //  console.log("req.params => ", req.body)
+app.post("/api/insertFabricApproval", (req, res) => {  
   FabricApproval.insertFabricApproval(req.body, res)
 });
 
-app.post("/api/rejectFabricApproval", (req, res) => {
-  // console.log("req.params => ", req.body)
+app.post("/api/rejectFabricApproval", (req, res) => {  
   FabricApproval.rejectFabricApproval(req.body, res)
 });
 
@@ -44,20 +43,30 @@ app.post("/api/rejectFabricApproval", (req, res) => {
 
 // yarn po approval
 
-app.post("/api/getYarnPoApproval", (req, res) => {
-  // console.log("req.params => ", req.body)
+app.post("/api/getYarnPoApproval", (req, res) => { 
   YarnPoApproval.getYarnPoApprovalSelect(req.body, res)
 });
 
-app.post("/api/insertYarnPoApproval", (req, res) => {
-  //  console.log("req.params => ", req.body)
+app.post("/api/insertYarnPoApproval", (req, res) => {  
   YarnPoApproval.insertYarnPoApproval(req.body, res)
 });
 
 // app.post("/api/insertYarnPoReject", (req, res) => {
-//   // console.log("req.params => ", req.body)
 //   YarnPoApproval.insertYarnPoReject(req.body, res)
 // });
+
+
+
+// -------------------------------------------------------------------------------
+
+
+// General Budget approval
+
+app.post("/api/getGeneralBugApproval", (req, res) => { 
+  GeneralBudApproval.getGeneralBudApproval(req.body, res)
+});
+
+
 
 // -------------------------------------------------------------------------------
 

@@ -174,6 +174,32 @@ export const insertYarnPoApproval = async (serverIp, data) => {
 
 
 
+// General Budget Approval
+
+export const getGeneralBudApproval = async (serverIp, data) => {
+  try {
+
+    const response = await fetch(
+      serverIp + "/api/getGeneralBugApproval",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const jsonData = await response.json();
+    return jsonData;
+  } catch (e) {
+    console.log(e.message);
+    return e.message;
+  }
+};
+
+
+
+
 
 
 

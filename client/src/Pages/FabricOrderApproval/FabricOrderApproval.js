@@ -54,7 +54,7 @@ export default function FabricApproval() {
         let lastDocId = null;
         return data.map(row => {
             const newRow = {
-                ...row,
+                // ...row,
                 ORDVAL_ORG: row.ORDVAL,
                 BUDVAL_ORG: row.BUDVAL,
                 DIFF_ORG: row.DIFF,
