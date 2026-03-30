@@ -286,19 +286,19 @@ export default function Home() {
                     UNAM: dashboardCtx.userName
                 }
                 const result = await getFabricApproval(serverIp, data);
-                console.log("Result :", result);
+                console.log("Fabric Result count :", result);
 
                 if (result.MESSAGE === 'Success') {
                     const apiData = result.data;
                     const uniqueDocIds = [...new Set(apiData.map(item => item.DOCID))];
                     const count = uniqueDocIds.length;
-                    // console.log("count => ", count)
+                    console.log("count => ", count)
                     setFabCount(count)
                 } 
 
 
                 const result2 = await getYarnPoApproval(serverIp, data);
-                console.log("Result2 :", result2);
+                console.log("YArn Result count:", result2);
 
                 if (result2.MESSAGE === 'Success') {
                     const apiData = result2.data;

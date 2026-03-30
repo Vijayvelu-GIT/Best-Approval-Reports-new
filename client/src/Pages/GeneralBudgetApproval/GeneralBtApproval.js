@@ -63,7 +63,7 @@ export default function GeneralAprroval() {
                     UNAM : "bss1"
                 }
                 const result = await getGeneralBudApproval(serverIp, data);
-                console.log("Result:", result);
+                console.log("General Result:", result);
 
                 if (result.MESSAGE === 'Success') {
 

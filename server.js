@@ -67,6 +67,10 @@ app.post("/api/getGeneralBugApproval", (req, res) => {
 });
 
 
+app.post("/api/getGeneralBugApproval", (req, res) => { 
+  GeneralBudApproval.insertGeneralApproval(req.body, res)
+});
+
 
 // -------------------------------------------------------------------------------
 

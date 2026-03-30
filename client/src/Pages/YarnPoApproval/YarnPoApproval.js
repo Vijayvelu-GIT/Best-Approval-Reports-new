@@ -32,26 +32,22 @@ export default function YarnApproval() {
 
 
 
-    const formatDataForMerge = (data) => {
-        let lastDocId = null;
-        return data.map(row => {
-            const newRow = {
-                ...row,
-                ORDVAL_ORG: row.ORDVAL,
-                BUDVAL_ORG: row.BUDVAL,
-                DIFF_ORG: row.DIFF,
-                PRPER_ORG: row.PRPER
-            };
-            if (row.DOCID === lastDocId) {
-                newRow.ORDVAL = "";
-                newRow.BUDVAL = "";
-                newRow.DIFF = "";
-                newRow.PRPER = "";
-            }
-            lastDocId = row.DOCID;
-            return newRow;
-        });
-    };
+    // const formatDataForMerge = (data) => {
+    //     let lastDocId = null;
+    //     return data.map(row => {
+    //         const newRow = {
+    //             ...row,
+    //             POVALUE_ORG: row.POVALUE,
+    //             TOTPOQTY_ORG: row.TOTPOQTY
+    //         };
+    //         if (row.DOCID === lastDocId) {
+    //             newRow.POVALUE = null;
+    //             newRow.TOTPOQTY = null;
+    //         }
+    //         lastDocId = row.DOCID;
+    //         return newRow;
+    //     });
+    // };
 
 
 
@@ -66,16 +62,21 @@ export default function YarnApproval() {
                     UNAM: ctx.userName
                 }
                 const result = await getYarnPoApproval(serverIp, data);
-                console.log("Result:", result);
+                console.log("Yarn Result:", result);
 
                 if (result.MESSAGE === 'Success') {
 
-                    const formattedData = formatDataForMerge(
-                        result.data.map(item => ({
-                            ...item,
-                            DOCDATE: moment(item.DOCDATE).toDate()
-                        }))
-                    );
+                    // const formattedData = formatDataForMerge(
+                    //     result.data.map(item => ({
+                    //         ...item,
+                    //         DOCDATE: moment(item.DOCDATE).toDate()
+                    //     }))
+                    // );
+
+                    const formattedData = result.data.map(item => ({
+                        ...item,
+                        DOCDATE: moment(item.DOCDATE).toDate()
+                    }))
                     setApprovalData(formattedData);
                 } else {
                     // alert("")
@@ -124,18 +125,16 @@ export default function YarnApproval() {
             return;
         }
 
-        const correctedRecords = selectedRecords.map(row => ({
-            ...row,
-            ORDVAL: row.ORDVAL_ORG,
-            BUDVAL: row.BUDVAL_ORG,
-            DIFF: row.DIFF_ORG,
-            PRPER: row.PRPER_ORG
-        }));
+        // const correctedRecords = selectedRecords.map(row => ({
+        //     ...row,
+        //     POVALUE : row.POVALUE_ORG,
+        //     TOTPOQTY : row.TOTPOQTY_ORG            
+        // }));
 
         // console.log("Correct data => ", correctedRecords);
 
         const data = {
-            selectedRecords: correctedRecords,
+            selectedRecords: selectedRecords,
             username: ctx.userName
         };
 
@@ -380,8 +379,8 @@ export default function YarnApproval() {
                     <AggregatesDirective>
                         <AggregateDirective>
                             <AggregateColumnsDirective>
-                                <AggregateColumnDirective field="DOCDATE" type="Count" groupFooterTemplate={totalLabelTemplate}/>
-                                <AggregateColumnDirective field="POVALUE" type="Sum" groupFooterTemplate={groupFooterTemplate}/>                                
+                                <AggregateColumnDirective field="DOCDATE" type="Count" groupFooterTemplate={totalLabelTemplate} />
+                                <AggregateColumnDirective field="POVALUE" type="Sum" groupFooterTemplate={groupFooterTemplate} />
                             </AggregateColumnsDirective>
                         </AggregateDirective>
                     </AggregatesDirective>

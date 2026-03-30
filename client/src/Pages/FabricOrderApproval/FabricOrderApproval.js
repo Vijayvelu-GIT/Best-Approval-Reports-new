@@ -61,10 +61,10 @@ export default function FabricApproval() {
                 PRPER_ORG: row.PRPER
             };
             if (row.DOCID === lastDocId) {
-                newRow.ORDVAL = "";
-                newRow.BUDVAL = "";
-                newRow.DIFF = "";
-                newRow.PRPER = "";
+                newRow.ORDVAL = null;
+                newRow.BUDVAL = null;
+                newRow.DIFF = null;
+                newRow.PRPER = null;
             }
             lastDocId = row.DOCID;
             return newRow;
@@ -82,7 +82,7 @@ export default function FabricApproval() {
                     UNAM: ctx.userName
                 }
                 const result = await getFabricApproval(serverIp, data);
-                // console.log("Result:", result);
+                console.log("Fabric Result:", result);
 
                 if (result.MESSAGE === 'Success') {
 
