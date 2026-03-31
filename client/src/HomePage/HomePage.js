@@ -255,8 +255,8 @@ export default function Home() {
             navigate("/YarnPo")
         }
 
-        if(screen === "General"){
-            navigate("/General")
+        if(screen === "PO"){
+            navigate("/GeneralPo")
         }
     };
 

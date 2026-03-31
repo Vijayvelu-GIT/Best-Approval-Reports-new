@@ -176,11 +176,56 @@ export const insertYarnPoApproval = async (serverIp, data) => {
 
 // General Budget Approval
 
-export const getGeneralBudApproval = async (serverIp, data) => {
+export const getGeneralPoApproval = async (serverIp, data) => {
   try {
 
     const response = await fetch(
-      serverIp + "/api/getGeneralBugApproval",
+      serverIp + "/api/getGeneralPoApproval",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const jsonData = await response.json();
+    return jsonData;
+  } catch (e) {
+    console.log(e.message);
+    return e.message;
+  }
+};
+
+
+
+export const insertGeneralPoApproval = async (serverIp, data) => {
+  try {
+
+    const response = await fetch(
+      serverIp + "/api/insertGeneralPoApproval",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const jsonData = await response.json();
+    return jsonData;
+  } catch (e) {
+    console.log(e.message);
+    return e.message;
+  }
+};
+
+
+export const insertGeneralPoReject = async (serverIp, data) => {
+  try {
+
+    const response = await fetch(
+      serverIp + "/api/insertGeneralPoReject",
       {
         method: "POST",
         headers: {

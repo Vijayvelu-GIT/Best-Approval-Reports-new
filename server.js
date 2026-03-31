@@ -60,15 +60,18 @@ app.post("/api/insertYarnPoApproval", (req, res) => {
 // -------------------------------------------------------------------------------
 
 
-// General Budget approval
+// General Po approval
 
-app.post("/api/getGeneralBugApproval", (req, res) => { 
-  GeneralBudApproval.getGeneralBudApproval(req.body, res)
+app.post("/api/getGeneralPoApproval", (req, res) => { 
+  GeneralBudApproval.getGeneralPoApproval(req.body, res)
 });
 
+app.post("/api/insertGeneralPoApproval", (req, res) => { 
+  GeneralBudApproval.approvalGeneralPoApp(req.body, res)
+});
 
-app.post("/api/getGeneralBugApproval", (req, res) => { 
-  GeneralBudApproval.insertGeneralApproval(req.body, res)
+app.post("/api/insertGeneralPoReject", (req, res) => { 
+  GeneralBudApproval.rejectGeneralPoApp(req.body, res)
 });
 
 

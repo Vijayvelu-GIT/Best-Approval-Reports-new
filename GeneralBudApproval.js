@@ -1,7 +1,7 @@
 const oracledb = require("oracledb");
 const dbconfig = require("./dbconfig");
 
-async function getGeneralBudApproval(data, res) {
+async function getGeneralPoApproval(data, res) {
   let connection;
 
   try {
@@ -81,7 +81,7 @@ async function getGeneralBudApproval(data, res) {
 
 
 
-async function insertGeneralApproval(data, res) {
+async function approvalGeneralPoApp(data, res) {
   let connection;
   try {
 
@@ -102,7 +102,7 @@ async function insertGeneralApproval(data, res) {
     const insertMasApprovalSql = `UPDATE GENPOMAS SET APPLEVEL = APPLEVEL + 1 WHERE GENPOMASID = :GENPOMASID `;
 
     const insertMasApprovalBinds = records.map(y => ({
-      GENPOMASID: ""
+      GENPOMASID: y.GENPOMASID
     }));
 
     await connection.executeMany(insertMasApprovalSql, insertMasApprovalBinds);
@@ -110,14 +110,14 @@ async function insertGeneralApproval(data, res) {
 
 
     const insertHistoryApprovalSql = `INSERT INTO APPROVAL_HISTORY (SNAME, MASTERID, APPLEVEL, APPUSER, APPDATE, TRANSID, DOCID) VALUES 
-        ( :SNAME , :ACCPOMASID , :APPLEV , :USERNAME , SYSDATE  , :TRANSID  , :DOCID )`;
+        ( :SNAME , :GENPOMASID , :APPLEV , :USERNAME , SYSDATE  , :TRANSID  , :DOCID )`;
 
     const insertHistoryApprovalBinds = records.map(y => ({
       SNAME: y.SNAME,
-      ACCPOMASID: y.ACCPOMASID,
+      GENPOMASID: y.GENPOMASID,
       APPLEV: y.APPLEV,
       USERNAME: data.username,
-      TRANSID: y.TSIDNEW,
+      TRANSID: y.TRANSID,
       DOCID: y.DOCID
     }));
 
@@ -169,16 +169,15 @@ async function insertGeneralApproval(data, res) {
     // WHERE A.COMPMASID=B.COMPMASID AND B.SCREEN='GENERAL PURCHASE ORDER') B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL 
     // AND A.MAILSENT=0 AND GENPOMASID= :GENPOMASID AND A.PARTYID=C.PARTYMASID AND A.ENAME=B.COMPMASID )`
 
-    const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE, 'vijayvelu.git@gmail.com',  
-    NULL, 'Yarn PO Approved - ' || :DOCID || ' - ' || C.PARTYID,'Dear All,' || 
-    CHR(13) || CHR(13) || 'Yarn Po Approved For your Refernce' ||CHR(13) || CHR(13) || CHR(13) ||
-    '**This is system generated mail, pls do not reply**','f__yporpnt', '', '', 'YarnP', :RECORDID,
-    0, '','', '' FROM YARNPOMAS A, PARTYMAS C WHERE APPLEVEL = MAXLEVEL AND YARNPOMASID = :RECORDID
+    const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE,'vijayvelu.git@gmail.com', NULL,'General PO Approved - ' 
+    || :DOCID || ' - ' || C.PARTYID,    'Dear All,' || CHR(13) || CHR(13) || 'General Po Approved For your Refernce' 
+    || CHR(13) || CHR(13) || CHR(13) || '**This is system generated mail, pls do not reply**','f__genpodos','','','genpo',
+    :GENPOMASID, 0,'', '','' FROM GENPOMAS A, PARTYMAS C WHERE APPLEVEL = MAXLEVEL AND A.MAILSENT = 0 AND GENPOMASID = :GENPOMASID 
     AND A.PARTYID = C.PARTYMASID)`;
 
     const mailBinds = records.map(r => ({
       DOCID: r.DOCID,
-      RECORDID: r.RECORDID
+      GENPOMASID: r.GENPOMASID
     }));
 
     // console.log("mailBinds => ", mailBinds)
@@ -189,7 +188,7 @@ async function insertGeneralApproval(data, res) {
 
     const mailStsSql = `UPDATE GENPOMAS SET MAILSENT=1 WHERE GENPOMASID=:GENPOMASID AND APPLEVEL = MAXLEVEL`
 
-    const mailStsBinds = records.map(r => ({      
+    const mailStsBinds = records.map(r => ({
       GENPOMASID: r.GENPOMASID
     }));
 
@@ -227,6 +226,93 @@ async function insertGeneralApproval(data, res) {
 
 
 
+
+async function rejectGeneralPoApp(data, res) {
+  let connection;
+
+  try {
+
+    connection = await oracledb.getConnection(dbconfig);
+
+    const records = data.selectedRecords;
+
+    console.log("data => ", data)
+
+    if (!records || records.length === 0) {
+      return res.status(400).json({
+        STATUS: false,
+        MESSAGE: "No records selected"
+      });
+    }
+
+
+    const rejUpdateSql5 = `UPDATE GENPOMAS SET STATUS='Rejected', APPLEVEL=0, REQUEST='F', REQSENT = 0 WHERE DOCID =:DOCID`
+
+    const binds5 = records.map(r => ({      
+      DOCID: r.DOCID
+    }));
+
+    const result5 = await connection.executeMany(rejUpdateSql5, binds5);
+
+    console.log("result5 => ", result5.rowsAffected)
+
+    const totalAffected = result5.rowsAffected;
+
+    if (!totalAffected || totalAffected === 0) {
+      await connection.rollback();
+      return res.status(400).json({
+        STATUS: false,
+        MESSAGE: "No records found to reject"
+      });
+    }    
+
+
+    const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC, 'Fabric Order Rejected - ' || :DOCID || C.PARTYID,        
+    'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' || CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || 
+    CHR(13) || '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', ''        
+    FROM
+    (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID
+    FROM COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY' AND B.ORDTYPE = :FAPPTYPE) B, PARTYMAS C
+    WHERE A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
+
+    const mailBinds = records.map(r => ({
+      DOCID: r.DOCID,
+      REASON: data.reason,
+      FORDEMASID: r.FORDEMASID,
+      FAPPTYPE: r.FAPPTYPE
+    }));
+
+
+    await connection.executeMany(mailSql, mailBinds);
+
+    await connection.commit();
+
+    return res.status(200).json({
+      STATUS: true,
+      MESSAGE: "Fabric Orders Rejected Successfully"
+    });
+
+  } catch (err) {
+
+    if (connection) await connection.rollback();
+
+    console.error("Error:", err);
+
+    return res.status(500).json({
+      STATUS: false,
+      MESSAGE: err.message
+    });
+
+  } finally {
+
+    if (connection) await connection.close();
+
+  }
+}
+
+
+
+
 module.exports = {
-  getGeneralBudApproval, insertGeneralApproval
+  getGeneralPoApproval, approvalGeneralPoApp, rejectGeneralPoApp
 }

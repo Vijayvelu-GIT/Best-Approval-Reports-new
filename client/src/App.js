@@ -5,7 +5,7 @@ import LoginPage from "./LoginPage/LoginPage"
 import HomePage from "./HomePage/HomePage";
 import FabricOrderApproval from "./Pages/FabricOrderApproval/FabricOrderApproval";
 import YarnPoApproval from "./Pages/YarnPoApproval/YarnPoApproval";
-import GeneralApproval from "./Pages/GeneralBudgetApproval/GeneralBtApproval"
+import GeneralPoApproval from "./Pages/GeneralPoApproval/GeneralPoApproval"
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 // Register Syncfusion license key
@@ -24,7 +24,7 @@ function App() {
         <Route path="/home" element={<HomePage/>} />
         <Route path="/Fabric" element={<FabricOrderApproval/>} />
         <Route path="/YarnPo" element={<YarnPoApproval/>} />
-        <Route path="/General" element={<GeneralApproval/>} />
+        <Route path="/GeneralPo" element={<GeneralPoApproval/>} />
       </Routes>
     </BrowserRouter>
   );
