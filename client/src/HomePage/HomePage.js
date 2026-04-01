@@ -220,7 +220,7 @@ import logo2 from "../Images/logo2.png";
 
 import { useNavigate } from "react-router-dom";
 import CtxDashboard from "../Interface/Dashboard-Context";
-import { getFabricApproval, getYarnPoApproval } from "../serverCommication/ServerPostApi"
+import { getFabricApproval, getYarnPoApproval, getGeneralPoApproval} from "../serverCommication/ServerPostApi"
 import { User } from "lucide-react";
 
 
@@ -234,6 +234,7 @@ export default function Home() {
 
     const [fabCount, setFabCount] = useState(0);
     const [yarnPoCount, setYarnPoCount] = useState(0);
+    const [generalPoCount, setGeneralPoCount] = useState(0);
 
 
 
@@ -285,6 +286,12 @@ export default function Home() {
                     ENAME: dashboardCtx.selectedCompany,
                     UNAM: dashboardCtx.userName
                 }
+
+                const data1 = {
+                    // ENAME: dashboardCtx.selectedCompany,
+                    UNAM: "bss1"
+                }
+
                 const result = await getFabricApproval(serverIp, data);
                 console.log("Fabric Result count :", result);
 
@@ -292,13 +299,13 @@ export default function Home() {
                     const apiData = result.data;
                     const uniqueDocIds = [...new Set(apiData.map(item => item.DOCID))];
                     const count = uniqueDocIds.length;
-                    console.log("count => ", count)
+                    // console.log("count => ", count)
                     setFabCount(count)
                 } 
 
 
                 const result2 = await getYarnPoApproval(serverIp, data);
-                console.log("YArn Result count:", result2);
+                console.log("Yarn Result count:", result2);
 
                 if (result2.MESSAGE === 'Success') {
                     const apiData = result2.data;
@@ -306,6 +313,18 @@ export default function Home() {
                     const count = uniqueDocIds.length;
                     // console.log("count => ", count)
                     setYarnPoCount(count)
+                } 
+
+
+                const result3 = await getGeneralPoApproval(serverIp, data1);
+                console.log("General Result count:", result3);
+
+                if (result3.MESSAGE === 'Success') {
+                    const apiData = result3.data;
+                    const uniqueDocIds = [...new Set(apiData.map(item => item.DOCID))];
+                    const count = uniqueDocIds.length;
+                    console.log("count => ", count)
+                    setGeneralPoCount(count)
                 } 
             } catch (error) {
                 console.error("Error fetching fabric approval:", error);
@@ -370,7 +389,7 @@ export default function Home() {
                     className="dashboard-card card-emerald"
                     onClick={() => navigateTo("PO")}
                 >
-                    PO Approval
+                    PO Approval   ( <span>{generalPoCount}</span>  )
                 </div>
 
                 <div
