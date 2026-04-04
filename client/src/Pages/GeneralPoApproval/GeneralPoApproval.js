@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import CtxDashboard from "../../Interface/Dashboard-Context"
 import logo2 from "../../Images/logo2.png";
 import { useNavigate } from "react-router-dom";
-import { User } from "lucide-react";
+import { User, Building2, LogOut } from "lucide-react";
 import "./GeneralPoApproval.css"
 import { AppBarComponent } from "@syncfusion/ej2-react-navigations";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
@@ -35,8 +35,8 @@ export default function GeneralPoAprroval() {
         const fetchData = async () => {
             try {
                 const data = {
-                    // UNAM: ctx.userName
-                    UNAM: "bss1"
+                    UNAM: ctx.userName
+                    // UNAM: "bss1"
                 }
                 const result = await getGeneralPoApproval(serverIp, data);
                 console.log("General Result:", result);
@@ -183,13 +183,13 @@ export default function GeneralPoAprroval() {
         console.log("data => ", data)
 
         insertGeneralPoApproval(serverIp, data).then((result) => {
-            // if (result.STATUS) {
-            //     setAppdialogVisible(false);
-            //     alert(result.MESSAGE);
-            //     setTimeout(() => {
-            //         window.location.reload();
-            //     }, 100);
-            // }
+            if (result.STATUS) {
+                setAppdialogVisible(false);
+                alert(result.MESSAGE);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
+            }
         })
             .catch((error) => {
                 console.error(error);
@@ -282,12 +282,12 @@ export default function GeneralPoAprroval() {
                             <span className="username-text">{ctx.userName}</span>
                         </div>
                         <ButtonComponent
-                            content="Logout"
-                            cssClass="logout-button"
-                            iconCss="e-icons e-logout"
-                            iconPosition="Left"
+                            cssClass="logout-button custom-btn"
                             onClick={handleLogout}
-                        />
+                        >
+                            <LogOut size={18} style={{ marginRight: "6px" }} />
+                            LogOut
+                        </ButtonComponent>
                     </div>
 
                 </div>

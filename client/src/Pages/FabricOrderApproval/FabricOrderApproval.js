@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { getFabricApproval, insertFabricApproval, rejectFabricApproval } from "../../serverCommication/ServerPostApi"
 import CtxDashboard from "../../Interface/Dashboard-Context"
-import { User } from "lucide-react";
+import { User, Building2, LogOut } from "lucide-react";
 
 
 
@@ -50,26 +50,26 @@ export default function FabricApproval() {
     // console.log(" =>serverIp ",ctx.serverIp)   
 
 
-    const formatDataForMerge = (data) => {
-        let lastDocId = null;
-        return data.map(row => {
-            const newRow = {
-                // ...row,
-                ORDVAL_ORG: row.ORDVAL,
-                BUDVAL_ORG: row.BUDVAL,
-                DIFF_ORG: row.DIFF,
-                PRPER_ORG: row.PRPER
-            };
-            if (row.DOCID === lastDocId) {
-                newRow.ORDVAL = null;
-                newRow.BUDVAL = null;
-                newRow.DIFF = null;
-                newRow.PRPER = null;
-            }
-            lastDocId = row.DOCID;
-            return newRow;
-        });
-    };
+    // const formatDataForMerge = (data) => {
+    //     let lastDocId = null;
+    //     return data.map(row => {
+    //         const newRow = {
+    //             // ...row,
+    //             ORDVAL_ORG: row.ORDVAL,
+    //             BUDVAL_ORG: row.BUDVAL,
+    //             DIFF_ORG: row.DIFF,
+    //             PRPER_ORG: row.PRPER
+    //         };
+    //         if (row.DOCID === lastDocId) {
+    //             newRow.ORDVAL = null;
+    //             newRow.BUDVAL = null;
+    //             newRow.DIFF = null;
+    //             newRow.PRPER = null;
+    //         }
+    //         lastDocId = row.DOCID;
+    //         return newRow;
+    //     });
+    // };
 
 
 
@@ -86,12 +86,16 @@ export default function FabricApproval() {
 
                 if (result.MESSAGE === 'Success') {
 
-                    const formattedData = formatDataForMerge(
-                        result.data.map(item => ({
-                            ...item,
-                            DOCDATE: moment(item.DOCDATE).toDate()
-                        }))
-                    );
+                    // const formattedData = formatDataForMerge(
+                    //     result.data.map(item => ({
+                    //         ...item,
+                    //         DOCDATE: moment(item.DOCDATE).toDate()
+                    //     }))
+                    // );
+                    const formattedData = result.data.map(item => ({
+                        ...item,
+                        DOCDATE: moment(item.DOCDATE).toDate()
+                    }))
                     setApprovalData(formattedData);
                 } else {
                     // alert("")
@@ -139,18 +143,18 @@ export default function FabricApproval() {
             return;
         }
 
-        const correctedRecords = selectedRecords.map(row => ({
-            ...row,
-            ORDVAL: row.ORDVAL_ORG,
-            BUDVAL: row.BUDVAL_ORG,
-            DIFF: row.DIFF_ORG,
-            PRPER: row.PRPER_ORG
-        }));
+        // const correctedRecords = selectedRecords.map(row => ({
+        //     ...row,
+        //     ORDVAL: row.ORDVAL_ORG,
+        //     BUDVAL: row.BUDVAL_ORG,
+        //     DIFF: row.DIFF_ORG,
+        //     PRPER: row.PRPER_ORG
+        // }));
 
         // console.log("Correct data => ", correctedRecords);
 
         const data = {
-            selectedRecords: correctedRecords,
+            selectedRecords: selectedRecords,
             username: ctx.userName
         };
 
@@ -368,12 +372,12 @@ export default function FabricApproval() {
                             <span className="username-text">{ctx.userName}</span>
                         </div>
                         <ButtonComponent
-                            content="Logout"
-                            cssClass="logout-button"
-                            iconCss="e-icons e-logout"
-                            iconPosition="Left"
+                            cssClass="logout-button custom-btn"
                             onClick={handleLogout}
-                        />
+                        >
+                            <LogOut size={18} style={{ marginRight: "6px" }} />
+                            LogOut
+                        </ButtonComponent>
                     </div>
 
                 </div>

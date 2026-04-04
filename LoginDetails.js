@@ -35,7 +35,7 @@ async function login(data, res) {
                 MESSAGE : "Login Successfully"
             });
         } else {
-            return res.status(401).json({
+            return res.status(200).json({
                 STATUS : false,
                 MESSAGE : "Invalid Username or Password"
             });

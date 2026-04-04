@@ -4,7 +4,7 @@ import { AppBarComponent, Inject } from "@syncfusion/ej2-react-navigations";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import logo2 from "../../Images/logo2.png";
 import { useNavigate } from "react-router-dom";
-import { User } from "lucide-react";
+import { User, Building2, LogOut } from "lucide-react";
 import "./YarnPoApproval.css"
 import { Aggregate, AggregateColumnDirective, AggregateColumnsDirective, AggregateDirective, AggregatesDirective, ColumnDirective, ColumnsDirective, GridComponent, Resize, Sort, Filter, Group } from "@syncfusion/ej2-react-grids";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
@@ -309,12 +309,12 @@ export default function YarnApproval() {
                             <span className="username-text">{ctx.userName}</span>
                         </div>
                         <ButtonComponent
-                            content="Logout"
-                            cssClass="logout-button"
-                            iconCss="e-icons e-logout"
-                            iconPosition="Left"
+                            cssClass="logout-button custom-btn"
                             onClick={handleLogout}
-                        />
+                        >
+                            <LogOut size={18} style={{ marginRight: "6px" }} />
+                            LogOut
+                        </ButtonComponent>
                     </div>
 
                 </div>

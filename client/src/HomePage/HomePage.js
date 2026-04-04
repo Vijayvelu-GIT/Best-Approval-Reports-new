@@ -1,227 +1,14 @@
-// import React from "react";
-// import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
-// import { AppBarComponent } from "@syncfusion/ej2-react-navigations";
-// import { MenuComponent } from "@syncfusion/ej2-react-navigations";
-// import "./HomePage.css";
-
-// export default function Home() {
-//     const navigateTo = (screen) => {
-//         console.log("Navigate to:", screen);
-//     };
-
-//     const profileItems = [
-//         // { text: "My Profile" },
-//         // { text: "Settings" },
-//         // { separator: true },
-//         { text: "Logout" }
-//     ];
-
-//     const cards = [
-//         { label: "Home", icon: "e-home", screen: "home" },
-//         { label: "Orders", icon: "e-shopping-cart", screen: "orders" },
-//         { label: "Reports", icon: "e-chart", screen: "reports" },
-//         { label: "Settings", icon: "e-settings", screen: "settings" },
-//     ];
-
-//     return (
-//         //----------------------------style 2-------------------------------------------
-//         <div className="layout-container">
-
-//             {/* 🔷 Top Navigation */}
-//             <AppBarComponent colorMode="Primary" cssClass="top-bar">
-
-//                 <div className="left-section">
-//                     <span className="logo">🏢</span>
-//                     <span className="app-title">Company ERP</span>
-//                 </div>
-
-//                 <div className="right-section">
-
-//                     <ButtonComponent
-//                         iconCss="e-icons e-bell"
-//                         cssClass="e-flat"
-//                     />
-
-//                     <MenuComponent
-//                         items={profileItems}
-//                         cssClass="profile-menu"
-//                     >
-//                         <div className="profile-area">
-//                             <span className="profile-avatar">V</span>
-//                             <span className="profile-name">Vijay</span>
-//                             <span className="e-icons e-caret-down"></span>
-//                         </div>
-//                     </MenuComponent>
-
-//                 </div>
-//             </AppBarComponent>
-
-//             {/* 🔷 Main Content */}
-//             <div className="dashboard-content">
-
-//                 <div
-//                     className="dashboard-card"
-//                     onClick={() => navigateTo("Orders")}
-//                 >
-//                     Orders
-//                 </div>
-
-//                 <div
-//                     className="dashboard-card"
-//                     onClick={() => navigateTo("Reports")}
-//                 >
-//                     Reports
-//                 </div>
-
-//                 <div
-//                     className="dashboard-card"
-//                     onClick={() => navigateTo("Stock")}
-//                 >
-//                     Stock
-//                 </div>
-
-//                 <div
-//                     className="dashboard-card"
-//                     onClick={() => navigateTo("Users")}
-//                 >
-//                     Users
-//                 </div>
-
-//             </div>
-
-//         </div>
-
-
-//------------------------------style 1----------------------------
-// <div className="dashboard-container">
-//     <AppBarComponent colorMode="Primary">
-//         <h3 style={{ marginLeft: "15px" }}>My Application</h3>
-//     </AppBarComponent>
-
-//     <div className="card-grid">
-//         {cards.map((card, index) => (
-//             <div
-//                 key={index}
-//                 className="dashboard-card"
-//                 onClick={() => navigateTo(card.screen)}
-//             >
-//                 <span className={`e-icons ${card.icon} card-icon`}></span>
-//                 <h4>{card.label}</h4>
-//                 <ButtonComponent
-//                     cssClass="e-flat e-primary"
-//                     content="Open"
-//                 />
-//             </div>
-//         ))}
-//     </div>
-// </div>
-// <div className="home-container">
-//     <div className="home-header">
-//         <h1>Best Approval Reports</h1>
-//     </div>
-//     <div className="button-column">
-//         <ButtonComponent content="fabric Order Approval" cssClass="big-btn btn1" />
-//         <ButtonComponent content="PO Approval" cssClass="big-btn btn2" />
-//         <ButtonComponent content="Yarn Approval" cssClass="big-btn btn3" />
-//         <ButtonComponent content="General Approval" cssClass="big-btn btn4" />
-//     </div>
-// </div>
-//     );
-// }
-
-
-
-
-// import React from "react";
-// import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
-// import { AppBarComponent, MenuComponent } from "@syncfusion/ej2-react-navigations";
-// import "./HomePage.css";
-// import logo2 from "../Images/logo2.png";// your logo path
-
-// export default function Home() {
-
-//     const navigateTo = (screen) => {
-//         console.log("Navigate to:", screen);
-//     };
-
-//     const profileItems = [
-//         // { text: "My Profile" },
-//         // { text: "Change Password" },
-//         // { separator: true },
-//         { text: "Logout" }
-//     ];
-
-//     return (
-//         <div className="layout-container">           
-
-//             <AppBarComponent cssClass="top-bar custom-appbar">
-//                 <div className="appbar-container">
-
-//                     <div className="left-section">
-//                         <img src={logo2} alt="logo" className="company-logo" />
-//                         <span className="app-title">Company ERP</span>
-//                     </div>
-
-//                     <div className="right-section">
-
-//                         <ButtonComponent
-//                             content="Logout"
-//                             cssClass="logout-button"
-//                             iconCss="e-icons e-logout"                            
-//                             onClick={() => console.log("Logout clicked")}
-//                         />
-
-//                     </div>
-
-//                 </div>
-//             </AppBarComponent>
-
-//             {/* 🔷 Dashboard Cards */}
-//             <div className="dashboard-content">
-
-//                 <div className="dashboard-card card-indigo" onClick={() => navigateTo("Orders")}>
-//                     <span className="e-icons  card-icon"></span>
-//                     <h3>fabric Order Approval</h3>
-//                     {/* <p>Manage customer orders</p> */}
-//                 </div>
-
-//                 <div className="dashboard-card card-emerald" onClick={() => navigateTo("Reports")}>
-//                     <span className="e-icons card-icon"></span>
-//                     <h3>PO Approval</h3>
-//                     {/* <p>View business analytics</p> */}
-//                 </div>
-
-//                 <div className="dashboard-card card-amber" onClick={() => navigateTo("Stock")}>
-//                     <span className="e-icons  card-icon"></span>
-//                     <h3>Yarn Approval</h3>
-//                     {/* <p>Inventory management</p> */}
-//                 </div>
-
-//                 <div className="dashboard-card card-slate" onClick={() => navigateTo("Users")}>
-//                     <span className="e-icons  card-icon"></span>
-//                     <h3>General Approval</h3>
-//                     {/* <p>User access control</p> */}
-//                 </div>
-
-//             </div>
-
-//         </div>
-//     );
-// }
-
-
-
 import React, { useContext, useEffect, useState } from "react";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 import { AppBarComponent } from "@syncfusion/ej2-react-navigations";
 import "./HomePage.css";
 // import logo2 from "../Images/logo2.png";
 import logo2 from "../Images/logo2.png";
-
 import { useNavigate } from "react-router-dom";
 import CtxDashboard from "../Interface/Dashboard-Context";
-import { getFabricApproval, getYarnPoApproval, getGeneralPoApproval} from "../serverCommication/ServerPostApi"
-import { User } from "lucide-react";
+import { getFabricApproval, getYarnPoApproval, getGeneralPoApproval } from "../serverCommication/ServerPostApi"
+// import { User } from "lucide-react";
+import { User, Building2, LogOut } from "lucide-react";
 
 
 export default function Home() {
@@ -230,7 +17,7 @@ export default function Home() {
     const serverIp = dashboardCtx.serverIp;
 
 
-    console.log("dashboardCtx.isLoggedIn", +dashboardCtx.isLoggedIn);
+    // console.log("dashboardCtx.isLoggedIn", +dashboardCtx.isLoggedIn);
 
     const [fabCount, setFabCount] = useState(0);
     const [yarnPoCount, setYarnPoCount] = useState(0);
@@ -240,14 +27,14 @@ export default function Home() {
 
 
     useEffect(() => {
-        console.log("UseEffect dashboardCtx.isLoggedIn", +dashboardCtx.isLoggedIn);
+        // console.log("UseEffect dashboardCtx.isLoggedIn", +dashboardCtx.isLoggedIn);
         if (!(+dashboardCtx.isLoggedIn)) {
             navigate("/");
         }
     }, []);
 
     const navigateTo = (screen) => {
-        console.log("Navigate to:", screen);
+        // console.log("Navigate to:", screen);
         if (screen === "Fabric") {
             navigate("/Fabric")
         }
@@ -256,7 +43,7 @@ export default function Home() {
             navigate("/YarnPo")
         }
 
-        if(screen === "PO"){
+        if (screen === "PO") {
             navigate("/GeneralPo")
         }
     };
@@ -288,8 +75,8 @@ export default function Home() {
                 }
 
                 const data1 = {
-                    // ENAME: dashboardCtx.selectedCompany,
-                    UNAM: "bss1"
+                    UNAM: dashboardCtx.userName
+                    // UNAM: "bss1"
                 }
 
                 const result = await getFabricApproval(serverIp, data);
@@ -301,7 +88,7 @@ export default function Home() {
                     const count = uniqueDocIds.length;
                     // console.log("count => ", count)
                     setFabCount(count)
-                } 
+                }
 
 
                 const result2 = await getYarnPoApproval(serverIp, data);
@@ -313,7 +100,7 @@ export default function Home() {
                     const count = uniqueDocIds.length;
                     // console.log("count => ", count)
                     setYarnPoCount(count)
-                } 
+                }
 
 
                 const result3 = await getGeneralPoApproval(serverIp, data1);
@@ -325,7 +112,7 @@ export default function Home() {
                     const count = uniqueDocIds.length;
                     console.log("count => ", count)
                     setGeneralPoCount(count)
-                } 
+                }
             } catch (error) {
                 console.error("Error fetching fabric approval:", error);
             }
@@ -354,7 +141,7 @@ export default function Home() {
                             <span className="username-text">{dashboardCtx.userName}</span>
                         </div>
 
-                        <ButtonComponent
+                        {/* <ButtonComponent
                             content="Company"
                             cssClass="company-button"
                             iconCss="e-icons e-building"
@@ -368,7 +155,23 @@ export default function Home() {
                             iconCss="e-icons e-logout"
                             iconPosition="Left"
                             onClick={handleLogout}
-                        />
+                        /> */}
+
+                        <ButtonComponent
+                            cssClass="company-button custom-btn"
+                            onClick={handleCompanyChange}
+                        >
+                            <Building2 size={18} style={{ marginRight: "6px" }} />
+                            Company
+                        </ButtonComponent>
+
+                        <ButtonComponent
+                            cssClass="logout-button custom-btn"
+                            onClick={handleLogout}
+                        >
+                            <LogOut size={18} style={{ marginRight: "6px" }} />
+                            LogOut
+                        </ButtonComponent>
                     </div>
 
                 </div>

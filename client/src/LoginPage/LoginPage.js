@@ -11,6 +11,7 @@ import { getSelectedCompany } from "../serverCommication/ServerPostApi"
 import { Query } from "@syncfusion/ej2-data";
 import CtxDashboard from "../Interface/Dashboard-Context";
 import md5 from "md5";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Login() {
   const dashboardCtx = useContext(CtxDashboard);
@@ -24,6 +25,7 @@ export default function Login() {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [exporterMasId, setExporterMasId] = useState(null);
   const [companyList, setCompanyList] = useState([]);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Add refs for input fields
   const userNameRef = useRef(null);
@@ -33,7 +35,7 @@ export default function Login() {
   const toastRef = useRef(null);
   const navigate = useNavigate();
   const serverIp = dashboardCtx.serverIp;
-  console.log(serverIp);
+  // console.log(serverIp);
 
 
 
@@ -48,7 +50,7 @@ export default function Login() {
       }
     };
     fetchData();
-  }, []);
+  }, [serverIp]);
 
 
   useEffect(() => {
@@ -88,12 +90,12 @@ export default function Login() {
       password: md5(l_EnteredPwd_str)
     };
 
-    // console.log(userDet, "userDet");    
+    console.log(userDet, "userDet");
 
 
     checkUserDetails(l_EnterServerName, userDet)
       .then(result => {
-        // console.log("Login result:", result);
+        console.log("Login result:", result);
         if (result.STATUS) {
           toastRef.current?.show({
             content: "Login successful!",
@@ -188,21 +190,13 @@ export default function Login() {
                 />
 
                 <TextBoxComponent
+                  key={isLoggedIn}
                   ref={pwdRef}
                   type="password"
                   placeholder="Password"
                   floatLabelType="Auto"
                   cssClass="e-outline"
                 />
-
-                {/* <TextBoxComponent
-                  ref={serverNameRef}
-                  placeholder="Server IP (optional)"
-                  floatLabelType="Auto"
-                  value={serverIp}
-                  cssClass="e-outline"
-                
-                /> */}
 
                 <ButtonComponent
                   content="Login"

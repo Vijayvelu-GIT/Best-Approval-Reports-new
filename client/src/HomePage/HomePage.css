@@ -229,29 +229,29 @@
 
 /* Right */
 .right-section {
-    display: flex;
-    align-items: center;
-    gap: 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .user-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #f3f6fb;
-    padding: 6px 12px;
-    border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #f3f6fb;
+  padding: 6px 12px;
+  border-radius: 20px;
 }
 
 .user-icon {
-    font-size: 16px;
-    color: #0746bb;
+  font-size: 16px;
+  color: #0746bb;
 }
 
 .username-text {
-    font-weight: 600;
-    font-size: 16px;
-    color: #1b1b1b;
+  font-weight: 600;
+  font-size: 16px;
+  color: #1b1b1b;
 }
 
 /* Logout Button */
@@ -278,6 +278,7 @@
 .logout-button:hover {
   background: #dc2626 !important;
 }
+
 
 /* ================= Dashboard ================= */
 
@@ -337,14 +338,20 @@
 .company-button.e-btn {
   height: 36px;
   border-radius: 6px !important;
-  background: #1c929b !important;
+  background: #0e5022 !important;
   color: white !important;
   /* margin-left: 10px; */
   text-align: center;
 }
 
 .company-button:hover {
-  background: #1dd8c8 !important;
+  background: #053814 !important;
+}
+
+
+.company-button .e-icons e-building {
+  color: #ffffff !important;
+  /* white */
 }
 
 /* ================= Responsive ================= */
@@ -364,7 +371,7 @@
   }
 
   .company-logo {
-    height: 48px;
+    height: 80px;
   }
 
   .app-title {
@@ -376,4 +383,11 @@
     font-size: 12px;
     padding: 0 10px !important;
   }
+}
+
+
+.custom-btn {
+  display: flex !important;
+  align-items: center;
+  gap: 6px;
 }

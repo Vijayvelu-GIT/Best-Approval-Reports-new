@@ -21,7 +21,7 @@ async function getYarnPoApprovalSelect(data, res) {
 
         binds = {
             EXPNAME: data.ENAME,
-            UNAM : data.UNAM
+            UNAM: data.UNAM
 
         }
         options = {
@@ -36,9 +36,10 @@ async function getYarnPoApprovalSelect(data, res) {
                 data: result.rows
             }));
         } else {
-            return res.status(401).json({
+            return res.status(200).json({
                 STATUS: false,
-                MESSAGE: "Faild"
+                MESSAGE: "Faild",
+                data: []
             });
         }
     } catch (err) {
@@ -84,7 +85,7 @@ async function insertYarnPoApproval(data, res) {
             SNAME: y.SNAME,
             ACCPOMASID: y.ACCPOMASID,
             APPLEV: y.APPLEV,
-            USERNAME: data.username,            
+            USERNAME: data.username,
             TSID: y.TSIDNEW,
             DOCID: y.DOCID
         }));

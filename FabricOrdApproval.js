@@ -77,9 +77,10 @@ async function getFabricApproval(data, res) {
                 data: result.rows
             }));
         } else {
-            return res.status(401).json({
+            return res.status(200).json({
                 STATUS: false,
-                MESSAGE: "Faild"
+                MESSAGE: "Faild",
+                data: []
             });
         }
     } catch (err) {
@@ -182,31 +183,31 @@ async function insertFabricApproval(data, res) {
 
 
 
-        const mailSql = `INSERT INTO AXP_MAILJOBS ( SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE,MAILTO,MAILCC CC,'Fabric Order Approved - '||:DOCID ||C.PARTYID,'Dear All,
-        '||CHR(13)||CHR(13)||'Fabric Order Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','','','',
-        'forde',:FORDEMASID ,0,'','','' FROM fordemas A,(select B.MAILTO,B.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
-        B.SCREEN='FABRIC ORDER ENTRY'  and b.ordtype=:FAPPTYPE) B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND  fordemasid= :FORDEMASID AND A.PARTYID=C.PARTYMASID 
-        AND A.ENAME=B.COMPMASID )`;
+        // const mailSql = `INSERT INTO AXP_MAILJOBS ( SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE,MAILTO,MAILCC CC,'Fabric Order Approved - '||:DOCID ||C.PARTYID,'Dear All,
+        // '||CHR(13)||CHR(13)||'Fabric Order Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','','','',
+        // 'forde',:FORDEMASID ,0,'','','' FROM fordemas A,(select B.MAILTO,B.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
+        // B.SCREEN='FABRIC ORDER ENTRY'  and b.ordtype=:FAPPTYPE) B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND  fordemasid= :FORDEMASID AND A.PARTYID=C.PARTYMASID 
+        // AND A.ENAME=B.COMPMASID )`;
 
         // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC,'Fabric Order Approved - ' || :DOCID || C.PARTYID,
         // 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Approved For your Reference' || CHR(13) || CHR(13) || CHR(13) ||
         // '**This is system generated mail, pls do not reply**', '', '', '','forde', A.FORDEMASID, 0, '', '', ''  FROM 
         // (SELECT DISTINCT FORDEMASID, PARTYID, ENAME FROM FORDEMAS WHERE APPLEVEL = MAXLEVEL AND FORDEMASID = :FORDEMASID) A,
         // (SELECT B.MAILTO, B.MAILCC, A.COMPMASID FROM COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND 
-        // B.SCREEN = 'FABRIC ORDER ENTRY' AND B.ORDTYPE = :FAPPTYPE) B,PARTYMAS C WHERE A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
+        // B.SCREEN = 'FABRIC ORDER ENTRY' AND B.ORDTYPE = :FAPPTYPE) B,PARTYMAS C WHERE A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)` old
 
 
-        // const mailSql = `INSERT INTO AXP_MAILJOBS SELECT  MAILJOB_SEQ.NEXTVAL,   SYSDATE,
-        // 'vijayvelu.git@gmail.com',  NULL, 'Fabric Order Approved - ' || :DOCID || ' - ' || C.PARTYID,
-        // 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Approved For your Reference' ||
-        // CHR(13) || CHR(13) || CHR(13) ||  '**This is system generated mail, pls do not reply**',
-        // '', '', '','forde', :FORDEMASID,  0, '', '', '' FROM FORDEMAS A JOIN PARTYMAS C ON 
-        // A.PARTYID = C.PARTYMASID  WHERE APPLEVEL = MAXLEVEL AND FORDEMASID = :FORDEMASID`;
+        const mailSql = `INSERT INTO AXP_MAILJOBS SELECT  MAILJOB_SEQ.NEXTVAL,   SYSDATE,
+        'vijayvelu.git@gmail.com',  NULL, 'Fabric Order Approved - ' || :DOCID || ' - ' || C.PARTYID,
+        'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Approved For your Reference' ||
+        CHR(13) || CHR(13) || CHR(13) ||  '**This is system generated mail, pls do not reply**',
+        '', '', '','forde', :FORDEMASID,  0, '', '', '' FROM FORDEMAS A JOIN PARTYMAS C ON 
+        A.PARTYID = C.PARTYMASID  WHERE APPLEVEL = MAXLEVEL AND FORDEMASID = :FORDEMASID`;
 
         const mailBinds = records.map(r => ({
             DOCID: r.DOCID,
             FORDEMASID: r.FORDEMASID,
-            FAPPTYPE: r.FAPPTYPE
+            // FAPPTYPE: r.FAPPTYPE
         }));
 
         // console.log("mailBinds => ", mailBinds)
@@ -215,7 +216,7 @@ async function insertFabricApproval(data, res) {
 
 
 
-        await connection.commit();
+        // await connection.commit();
 
 
         console.log("All records processed successfully");
@@ -273,7 +274,7 @@ async function rejectFabricApproval(data, res) {
 
         const result5 = await connection.executeMany(rejUpdateSql5, binds5);
 
-        // console.log("result5 => ", result5.rowsAffected)
+        console.log("result5 => ", result5.rowsAffected)
 
         const totalAffected = result5.rowsAffected;
 
@@ -285,58 +286,34 @@ async function rejectFabricApproval(data, res) {
             });
         }
 
-        // console.log("checking 1")
 
-        // const rejectSql = `
-        //     UPDATE fordemas
-        //     SET fstatus = 'Rejected',
-        //         approved = 'F',
-        //         applevel = 0,
-        //         apprby = NULL,
-        //         appron = NULL,
-        //         rej = 'T',
-        //         request = 'F',
-        //         rejby = :username,
-        //         rejon = SYSDATE
-        //     WHERE docid = :docid
-        // `;
+        // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC, 'Fabric Order Rejected - ' || :DOCID || C.PARTYID,        
+        // 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' || CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || 
+        // CHR(13) || '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', ''        
+        // FROM
+        // (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID
+        // FROM COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY' AND B.ORDTYPE = :FAPPTYPE) B, PARTYMAS C
+        // WHERE A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
 
-        // const rejectBinds = records.map(r => ({
-        //     username: data.username,
-        //     docid: r.DOCID
-        // }));
-
-        // const result = await connection.executeMany(rejectSql, rejectBinds);
-
-
-        // const mailSql = `INSERT INTO AXP_MAILJOBS ( SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE,MAILTO,MAILCC CC,'Fabric Order Rejected - '||:DOCID 
-        // ||C.PARTYID,'Dear All,'||CHR(13)||CHR(13)|| 'Fabric Order Rejected For your Refernce'||CHR (13)|| CHR (13)||'Remarks ** '|| :REASON 
-        // ||CHR (13)||  '**This is system generated mail, pls do not reply**','','','','forde', :FORDEMASID ,0,'','','' FROM 
-
-        // fordemas A,(select B.MAILTO,B.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
-        // B.SCREEN='FABRIC ORDER ENTRY' and b.ordtype = :FAPPTYPE) B,PARTYMAS C WHERE a.docid= :DOCID 
-        // AND A.PARTYID = C.PARTYMASID AND A.ENAME=B.COMPMASID)`;
-
-
-        const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC, 'Fabric Order Rejected - ' || :DOCID || C.PARTYID,        
-        'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' || CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || 
-        CHR(13) || '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', ''        
-        FROM
-        (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID
-        FROM COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY' AND B.ORDTYPE = :FAPPTYPE) B, PARTYMAS C
-        WHERE A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
+        const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, 'vijayvelu.git@gmail.com', NULL,'Fabric Order Rejected - ' || :DOCID || C.PARTYID,        
+        'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' ||  CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || CHR(13) || 
+        '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', '' 
+        FROM 
+        (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID FROM COMPMAS A, COMPMAIL B 
+        WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY'  AND B.ORDTYPE = :FAPPTYPE) B,  PARTYMAS C WHERE A.PARTYID = C.PARTYMASID 
+        AND A.ENAME = B.COMPMASID)`
 
         const mailBinds = records.map(r => ({
             DOCID: r.DOCID,
             REASON: data.reason,
-            FORDEMASID: r.FORDEMASID,
             FAPPTYPE: r.FAPPTYPE
         }));
 
 
         await connection.executeMany(mailSql, mailBinds);
 
-        await connection.commit();
+        // await connection.commit();
+        console.log("Fabric Orders Rejected Successfully")
 
         return res.status(200).json({
             STATUS: true,
@@ -360,9 +337,6 @@ async function rejectFabricApproval(data, res) {
 
     }
 }
-
-
-
 
 
 module.exports = {
