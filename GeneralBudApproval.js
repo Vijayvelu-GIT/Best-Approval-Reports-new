@@ -6,7 +6,7 @@ async function getGeneralPoApproval(data, res) {
 
   try {
 
-    console.log("data => ", data)
+    // console.log("data => ", data)
 
     connection = await oracledb.getConnection(dbconfig);
 
@@ -39,7 +39,7 @@ async function getGeneralPoApproval(data, res) {
 
     let result = await connection.execute(sql, binds, options)
 
-    console.log("result => ", result.rows)
+    // console.log("result => ", result.rows)
 
     if (result.rows.length > 0) {
 
@@ -86,7 +86,7 @@ async function approvalGeneralPoApp(data, res) {
   let connection;
   try {
 
-    console.log("data => ", data)
+    // console.log("data => ", data)
 
     connection = await oracledb.getConnection(dbconfig);
 
@@ -163,18 +163,18 @@ async function approvalGeneralPoApp(data, res) {
     await connection.executeMany(insertApprovalStsSql3, updateApprovalBinds);
 
 
-    // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE,MAILTO,MAILCC CC,'General PO Approved - '||
-    // :DOCID ||C.PARTYID,'Dear All,'||CHR(13)||CHR(13)||'General Po Approved For your Refernce'||CHR (13)|| 
-    // CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','f__genpodos','','','genpo',
-    // :GENPOMASID ,0,'','','' FROM GENPOMAS A,(SELECT B.MAILTO,B.MAILCC,A.COMPMASID FROM COMPMAS A,COMPMAIL B 
-    // WHERE A.COMPMASID=B.COMPMASID AND B.SCREEN='GENERAL PURCHASE ORDER') B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL 
-    // AND A.MAILSENT=0 AND GENPOMASID= :GENPOMASID AND A.PARTYID=C.PARTYMASID AND A.ENAME=B.COMPMASID )`
+    const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE,MAILTO,MAILCC CC,'General PO Approved - '||
+    :DOCID ||C.PARTYID,'Dear All,'||CHR(13)||CHR(13)||'General Po Approved For your Refernce'||CHR (13)|| 
+    CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','f__genpodos','','','genpo',
+    :GENPOMASID ,0,'','','' FROM GENPOMAS A,(SELECT B.MAILTO,B.MAILCC,A.COMPMASID FROM COMPMAS A,COMPMAIL B 
+    WHERE A.COMPMASID=B.COMPMASID AND B.SCREEN='GENERAL PURCHASE ORDER') B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL 
+    AND A.MAILSENT=0 AND GENPOMASID= :GENPOMASID AND A.PARTYID=C.PARTYMASID AND A.ENAME=B.COMPMASID )`
 
-    const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE,'vijayvelu.git@gmail.com', NULL,'General PO Approved - ' 
-    || :DOCID || ' - ' || C.PARTYID,    'Dear All,' || CHR(13) || CHR(13) || 'General Po Approved For your Refernce' 
-    || CHR(13) || CHR(13) || CHR(13) || '**This is system generated mail, pls do not reply**','f__genpodos','','','genpo',
-    :GENPOMASID, 0,'', '','' FROM GENPOMAS A, PARTYMAS C WHERE APPLEVEL = MAXLEVEL AND A.MAILSENT = 0 AND GENPOMASID = :GENPOMASID 
-    AND A.PARTYID = C.PARTYMASID)`;
+    // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE,'vijayvelu.git@gmail.com', NULL,'General PO Approved - ' 
+    // || :DOCID || ' - ' || C.PARTYID,    'Dear All,' || CHR(13) || CHR(13) || 'General Po Approved For your Refernce' 
+    // || CHR(13) || CHR(13) || CHR(13) || '**This is system generated mail, pls do not reply**','f__genpodos','','','genpo',
+    // :GENPOMASID, 0,'', '','' FROM GENPOMAS A, PARTYMAS C WHERE APPLEVEL = MAXLEVEL AND A.MAILSENT = 0 AND GENPOMASID = :GENPOMASID 
+    // AND A.PARTYID = C.PARTYMASID)`;
 
 
 
@@ -198,7 +198,7 @@ async function approvalGeneralPoApp(data, res) {
 
     await connection.executeMany(mailStsSql, mailStsBinds);
 
-    // await connection.commit();
+    await connection.commit();
 
     console.log("All records processed successfully");
 
@@ -268,22 +268,22 @@ async function rejectGeneralPoApp(data, res) {
     }
 
 
-    // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC, 'Fabric Order Rejected - ' || :DOCID || C.PARTYID,        
-    // 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' || CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || 
-    // CHR(13) || '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', ''        
-    // FROM
-    // (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID
-    // FROM COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY' AND B.ORDTYPE = :FAPPTYPE) B, PARTYMAS C
-    // WHERE A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
+    const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC, 'Fabric Order Rejected - ' || :DOCID || C.PARTYID,        
+    'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' || CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || 
+    CHR(13) || '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', ''        
+    FROM
+    (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID
+    FROM COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY' AND B.ORDTYPE = :FAPPTYPE) B, PARTYMAS C
+    WHERE A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
 
 
-    const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT  MAILJOB_SEQ.NEXTVAL,  SYSDATE,  'vijayvelu.git@gmail.com', null,  'Fabric Order Rejected - ' || 
-    :DOCID || C.PARTYID, 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' || CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || CHR(13) || 
-    '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', '' 
-    FROM 
-    (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID  FROM 
-    COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY'  AND B.ORDTYPE = :FAPPTYPE) B,PARTYMAS C  WHERE 
-    A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
+    // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT  MAILJOB_SEQ.NEXTVAL,  SYSDATE,  'vijayvelu.git@gmail.com', null,  'Fabric Order Rejected - ' || 
+    // :DOCID || C.PARTYID, 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Rejected For your Reference' || CHR(13) || CHR(13) || 'Remarks ** ' || :REASON || CHR(13) || 
+    // '**This is system generated mail, pls do not reply**', '', '', '', 'forde', A.FORDEMASID, 0,'','', '' 
+    // FROM 
+    // (SELECT DISTINCT FORDEMASID, PARTYID, ENAME, DOCID FROM FORDEMAS WHERE DOCID = :DOCID) A,(SELECT B.MAILTO, B.MAILCC, A.COMPMASID  FROM 
+    // COMPMAS A, COMPMAIL B WHERE A.COMPMASID = B.COMPMASID AND B.SCREEN = 'FABRIC ORDER ENTRY'  AND B.ORDTYPE = :FAPPTYPE) B,PARTYMAS C  WHERE 
+    // A.PARTYID = C.PARTYMASID AND A.ENAME = B.COMPMASID)`
 
     const mailBinds = records.map(r => ({
       DOCID: r.DOCID,
@@ -294,7 +294,8 @@ async function rejectGeneralPoApp(data, res) {
 
     await connection.executeMany(mailSql, mailBinds);
 
-    // await connection.commit();
+    await connection.commit();
+    
     console.log("General Po Rejected Successfully")
 
     return res.status(200).json({

@@ -65,7 +65,7 @@ async function insertYarnPoApproval(data, res) {
     let connection;
     try {
 
-        console.log("data => ", data)
+        // console.log("data => ", data)
 
         connection = await oracledb.getConnection(dbconfig);
 
@@ -121,21 +121,21 @@ async function insertYarnPoApproval(data, res) {
 
 
 
-        // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE,MAILTO,MAILCC CC,
-        // 'Yarn PO Approved - '||:DOCID || ' - '||C.PARTYID,'Dear All,'
-        // ||CHR(13)||CHR(13)||'Yarn Po Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)|| 
-        // '**This is system generated mail, pls do not reply**','f__yporpnt','','',
-        // 'YarnP',:RECORDID ,0,'','','' FROM YARNPOMAS A,(SELECT B.MAILTO,B.MAILCC,A.COMPMASID FROM 
-        // COMPMAS A,COMPMAIL B WHERE A.COMPMASID=B.COMPMASID AND B.SCREEN='YARN PURCHASE ORDER') B,
-        // PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND YARNPOMASID= :RECORDID AND A.PARTYID=C.PARTYMASID 
-        // AND A.ENAME=B.COMPMASID )`
+        const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE,MAILTO,MAILCC CC,
+        'Yarn PO Approved - '||:DOCID || ' - '||C.PARTYID,'Dear All,'
+        ||CHR(13)||CHR(13)||'Yarn Po Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)|| 
+        '**This is system generated mail, pls do not reply**','f__yporpnt','','',
+        'YarnP',:RECORDID ,0,'','','' FROM YARNPOMAS A,(SELECT B.MAILTO,B.MAILCC,A.COMPMASID FROM 
+        COMPMAS A,COMPMAIL B WHERE A.COMPMASID=B.COMPMASID AND B.SCREEN='YARN PURCHASE ORDER') B,
+        PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND YARNPOMASID= :RECORDID AND A.PARTYID=C.PARTYMASID 
+        AND A.ENAME=B.COMPMASID )`
 
-        const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE, 'vijayvelu.git@gmail.com',  
-        NULL, 'Yarn PO Approved - ' || :DOCID || ' - ' || C.PARTYID,'Dear All,' || 
-        CHR(13) || CHR(13) || 'Yarn Po Approved For your Refernce' ||CHR(13) || CHR(13) || CHR(13) ||
-        '**This is system generated mail, pls do not reply**','f__yporpnt', '', '', 'YarnP', :RECORDID,
-        0, '','', '' FROM YARNPOMAS A, PARTYMAS C WHERE APPLEVEL = MAXLEVEL AND YARNPOMASID = :RECORDID
-        AND A.PARTYID = C.PARTYMASID)`;
+        // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL,SYSDATE, 'vijayvelu.git@gmail.com',  
+        // NULL, 'Yarn PO Approved - ' || :DOCID || ' - ' || C.PARTYID,'Dear All,' || 
+        // CHR(13) || CHR(13) || 'Yarn Po Approved For your Refernce' ||CHR(13) || CHR(13) || CHR(13) ||
+        // '**This is system generated mail, pls do not reply**','f__yporpnt', '', '', 'YarnP', :RECORDID,
+        // 0, '','', '' FROM YARNPOMAS A, PARTYMAS C WHERE APPLEVEL = MAXLEVEL AND YARNPOMASID = :RECORDID
+        // AND A.PARTYID = C.PARTYMASID)`;
 
         const mailBinds = records.map(r => ({
             DOCID: r.DOCID,
@@ -148,7 +148,7 @@ async function insertYarnPoApproval(data, res) {
 
 
 
-        // await connection.commit();
+        await connection.commit();
 
         console.log("All records processed successfully");
 
