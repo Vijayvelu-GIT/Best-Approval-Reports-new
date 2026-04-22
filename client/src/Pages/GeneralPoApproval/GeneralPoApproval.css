@@ -43,14 +43,22 @@
 }
 
 /* Grid wrapper with gap */
-.grid-wrapper {
-    margin: 30px;
-    /* width: 95%; */
-    /* 4 side gap */
+/* .grid-wrapper {
+    margin: 30px;   
     padding: 20px;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+} */
+
+.e-grid .e-rowcell {
+    white-space: normal !important;
+    word-break: break-word;
+    line-height: 1.4;
+}
+
+.e-grid .e-headercell {
+    white-space: normal !important;
 }
 
 /* Title */

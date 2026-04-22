@@ -318,16 +318,19 @@ export default function GeneralPoAprroval() {
             <div className="grid-wrapper">
                 <GridComponent
                     ref={gridRef}
-                    dataBound={dataBound}
+                    // dataBound={dataBound}
                     dataSource={approvalData}
                     gridLines="Both"
-                    height="600"
+                    height="680"
                     allowResizing={true}
                     allowSelection={true}
                     rowSelecting={onRowSelecting}
                     rowDeselected={onRowDeselected}
                     selectionSettings={{ type: "Multiple", checkboxOnly: true }}
-                    clipMode="EllipsisWithTooltip"
+                    // clipMode="EllipsisWithTooltip"
+                    clipMode="Clip"
+                    allowTextWrap={true}
+                    textWrapSettings={{ wrapMode: 'Content' }}
                     allowGrouping={true}
                     groupSettings={{
                         columns: ['DOCID'],
@@ -338,17 +341,17 @@ export default function GeneralPoAprroval() {
                 // enableRowSpan={true}
                 >
                     <ColumnsDirective>
-                        <ColumnDirective type="checkbox" width="50" />
-                        <ColumnDirective field='CREATEDBY' headerText="Po Created By" textAlign="Center" />
-                        <ColumnDirective field='DOCID' headerText="Doc ID" textAlign="Center" />
-                        <ColumnDirective field='DOCDATE' headerText="Doc Date" textAlign="Center" format="dd/MM/yyyy" type="date" />
-                        <ColumnDirective field='PARTYID' headerText="Party Name" textAlign="Center" />
-                        <ColumnDirective field='REMARKS' headerText="Remarks" textAlign="Center" format="N2" />
-                        <ColumnDirective field='TRIMNAME' headerText="Acc Name" textAlign="Center" />
-                        <ColumnDirective field='TOTQTY' headerText="Quantity" textAlign="Center" />
-                        <ColumnDirective field='NET' headerText="Po Value" textAlign="Center" />
-                        <ColumnDirective field='POAGT' headerText="Po Against" textAlign="Center" format="N2" />
-                        <ColumnDirective field='BUDTYPE' headerText="Budget Type" textAlign="Center" />
+                        <ColumnDirective type="checkbox" width="25" />
+                        <ColumnDirective field='CREATEDBY' headerText="Po Created By" textAlign="Center" width="100" />
+                        <ColumnDirective field='DOCID' headerText="Doc ID" textAlign="Center" width="100"/>
+                        <ColumnDirective field='DOCDATE' headerText="Doc Date" textAlign="Center" format="dd/MM/yyyy" type="date" width="80" />
+                        <ColumnDirective field='POAGT' headerText="Po Against" textAlign="Center" format="N2" width="100"/>
+                        <ColumnDirective field='PARTYID' headerText="Party Name" textAlign="Center" width="140"/>
+                        <ColumnDirective field='REMARKS' headerText="Remarks" textAlign="Left" format="N2" width="180"/>
+                        <ColumnDirective field='TRIMNAME' headerText="Acc Name" textAlign="Left" width="180"/>
+                        <ColumnDirective field='TOTQTY' headerText="Quantity" textAlign="Center" width="80"/>
+                        <ColumnDirective field='NET' headerText="Po Value" textAlign="Center" width="80" />                        
+                        <ColumnDirective field='BUDTYPE' headerText="Budget Type" textAlign="Center" width="100" />
                     </ColumnsDirective>
 
                     <AggregatesDirective>

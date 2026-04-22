@@ -1,8 +1,6 @@
 {
   "name": "best_approval_reports",
   "version": "0.1.0",
-  "main": "server.js",
-  "bin": "server.js",
   "private": true,
   "dependencies": {
     "@syncfusion/ej2-base": "^32.2.3",
