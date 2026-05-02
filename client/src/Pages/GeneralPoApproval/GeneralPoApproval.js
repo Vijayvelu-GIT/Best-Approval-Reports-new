@@ -265,6 +265,68 @@ export default function GeneralPoAprroval() {
 
 
 
+    // const attachTemplate = (props) => {
+    //     return (
+    //         <a
+    //             href="#"
+    //             style={{ color: "blue", textDecoration: "underline" }}
+    //         // onClick={(e) => handleOpenPdf(e, props)}
+    //         >
+    //             View File
+    //         </a>
+    //     );
+    // };
+
+
+    const attachTemplate = (props) => {
+        // if (!props.HASFILE) {
+        //     return <span style={{ color: "gray" }}>No File</span>;
+        // }
+
+        return (
+            <a
+                href="#"
+                onClick={(e) => handleOpenPdf(e, props)}
+            >
+                View File
+            </a>
+        );
+    };
+
+
+    const handleOpenPdf = async (e, rowData) => {
+        e.preventDefault();
+
+        try {
+            const data = {
+                DOCID: rowData.DOCID
+            };
+
+            // const response = await fetch(`${serverIp}/getPoPdf`, {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json"
+            //     },
+            //     body: JSON.stringify(data)
+            // });
+
+            // if (!response.ok) {
+            //     throw new Error("Failed to fetch PDF");
+            // }
+
+            // const blob = await response.blob();
+
+            // const fileURL = window.URL.createObjectURL(blob);
+
+            // window.open(fileURL, "_blank"); // new tab la open
+        } catch (error) {
+            console.error("Error opening PDF:", error);
+            alert("Unable to open file");
+        }
+    };
+
+
+
     return (
         <div className="page-containergeneral">
             <AppBarComponent cssClass="top-bar custom-appbar">
@@ -343,15 +405,21 @@ export default function GeneralPoAprroval() {
                     <ColumnsDirective>
                         <ColumnDirective type="checkbox" width="25" />
                         <ColumnDirective field='CREATEDBY' headerText="Po Created By" textAlign="Center" width="100" />
-                        <ColumnDirective field='DOCID' headerText="Doc ID" textAlign="Center" width="100"/>
+                        <ColumnDirective field='DOCID' headerText="Doc ID" textAlign="Center" width="100" />
                         <ColumnDirective field='DOCDATE' headerText="Doc Date" textAlign="Center" format="dd/MM/yyyy" type="date" width="80" />
-                        <ColumnDirective field='POAGT' headerText="Po Against" textAlign="Center" format="N2" width="100"/>
-                        <ColumnDirective field='PARTYID' headerText="Party Name" textAlign="Center" width="140"/>
-                        <ColumnDirective field='REMARKS' headerText="Remarks" textAlign="Left" format="N2" width="180"/>
-                        <ColumnDirective field='TRIMNAME' headerText="Acc Name" textAlign="Left" width="180"/>
-                        <ColumnDirective field='TOTQTY' headerText="Quantity" textAlign="Center" width="80"/>
-                        <ColumnDirective field='NET' headerText="Po Value" textAlign="Center" width="80" />                        
+                        <ColumnDirective field='POAGT' headerText="Po Against" textAlign="Center" format="N2" width="100" />
+                        <ColumnDirective field='PARTYID' headerText="Party Name" textAlign="Center" width="140" />
+                        <ColumnDirective field='REMARKS' headerText="Remarks" textAlign="Left" format="N2" width="180" />
+                        <ColumnDirective field='TRIMNAME' headerText="Acc Name" textAlign="Left" width="180" />
+                        <ColumnDirective field='TOTQTY' headerText="Quantity" textAlign="Center" width="80" />
+                        <ColumnDirective field='NET' headerText="Po Value" textAlign="Center" width="80" />
                         <ColumnDirective field='BUDTYPE' headerText="Budget Type" textAlign="Center" width="100" />
+                        <ColumnDirective
+                            headerText="Attach"
+                            textAlign="Center"
+                            width="80"
+                            template={(props) => attachTemplate(props)}
+                        />
                     </ColumnsDirective>
 
                     <AggregatesDirective>
