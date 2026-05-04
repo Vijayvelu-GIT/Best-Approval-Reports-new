@@ -243,6 +243,28 @@ export const insertGeneralPoReject = async (serverIp, data) => {
 };
 
 
+export const getGeneralpdfapp = async (serverIp, data) => {
+  try {
+
+    const response = await fetch(
+      serverIp + "/api/attachFile",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const blob = await response.blob();
+    return blob;
+  } catch (e) {
+    console.log(e.message);
+    throw e;
+  }
+};
+
+
 
 
 

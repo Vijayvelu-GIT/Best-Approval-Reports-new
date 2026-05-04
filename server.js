@@ -29,11 +29,11 @@ app.post("/api/getFabricApproval", (req, res) => {
   FabricApproval.getFabricApproval(req.body, res)
 });
 
-app.post("/api/insertFabricApproval", (req, res) => {  
+app.post("/api/insertFabricApproval", (req, res) => {
   FabricApproval.insertFabricApproval(req.body, res)
 });
 
-app.post("/api/rejectFabricApproval", (req, res) => {  
+app.post("/api/rejectFabricApproval", (req, res) => {
   FabricApproval.rejectFabricApproval(req.body, res)
 });
 
@@ -43,11 +43,11 @@ app.post("/api/rejectFabricApproval", (req, res) => {
 
 // yarn po approval
 
-app.post("/api/getYarnPoApproval", (req, res) => { 
+app.post("/api/getYarnPoApproval", (req, res) => {
   YarnPoApproval.getYarnPoApprovalSelect(req.body, res)
 });
 
-app.post("/api/insertYarnPoApproval", (req, res) => {  
+app.post("/api/insertYarnPoApproval", (req, res) => {
   YarnPoApproval.insertYarnPoApproval(req.body, res)
 });
 
@@ -62,17 +62,21 @@ app.post("/api/insertYarnPoApproval", (req, res) => {
 
 // General Po approval
 
-app.post("/api/getGeneralPoApproval", (req, res) => { 
+app.post("/api/getGeneralPoApproval", (req, res) => {
   GeneralBudApproval.getGeneralPoApproval(req.body, res)
 });
 
-app.post("/api/insertGeneralPoApproval", (req, res) => { 
+app.post("/api/insertGeneralPoApproval", (req, res) => {
   GeneralBudApproval.approvalGeneralPoApp(req.body, res)
 });
 
-app.post("/api/insertGeneralPoReject", (req, res) => { 
+app.post("/api/insertGeneralPoReject", (req, res) => {
   GeneralBudApproval.rejectGeneralPoApp(req.body, res)
 });
+
+app.post("/api/attachFile", (req, res) => {  
+  GeneralBudApproval.getGeneralPoAttach(req.body, res)
+})
 
 
 // -------------------------------------------------------------------------------

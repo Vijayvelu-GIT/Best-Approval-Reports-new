@@ -1,5 +1,7 @@
 const oracledb = require("oracledb");
 const dbconfig = require("./dbconfig");
+const fs = require("fs");
+const path = require("path");
 
 async function getGeneralPoApproval(data, res) {
   let connection;
@@ -339,9 +341,62 @@ async function rejectGeneralPoApp(data, res) {
   }
 }
 
+async function getGeneralPoAttach(data, res) {
+  let connection;
+  try {
+
+    connection = await oracledb.getConnection(dbconfig);
+
+    sql = `SELECT AXPATTACHMENTPATH||'genpo'||'\\'||GENPOMASID||'-'||FILENAME FILEPATH FROM GENPOMAS A WHERE DOCID = :DOCID`
+
+    binds = {
+      DOCID: data.DOCID
+    }
+
+    options = {
+      outFormat: oracledb.OUT_FORMAT_OBJECT,
+    };
+
+    let result = await connection.execute(sql, binds, options)
+
+    if (!result.rows || result.rows.length === 0) {
+      return res.status(404).send("File not found");
+    }
+
+    const filePath = result.rows[0].FILEPATH;
+
+    console.log("File Path:", filePath);
+   
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).send("File not found in server");
+    }   
+    res.sendFile(path.resolve(filePath));
+
+  } catch (err) {
+
+    console.log("Error : ", err)
+
+    return res.status(500).json({
+      STATUS: false,
+      MESSAGE: "Error",
+      error: err.message
+    });
+
+  } finally {
+
+    if (connection) {
+      try {
+        await connection.close();
+      } catch (err) {
+        console.error("Error closing connection:", err);
+      }
+    }
+  }
+}
+
 
 
 
 module.exports = {
-  getGeneralPoApproval, approvalGeneralPoApp, rejectGeneralPoApp
+  getGeneralPoApproval, approvalGeneralPoApp, rejectGeneralPoApp, getGeneralPoAttach
 }

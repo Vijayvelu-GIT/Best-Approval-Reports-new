@@ -6,7 +6,7 @@ import { User, Building2, LogOut } from "lucide-react";
 import "./GeneralPoApproval.css"
 import { AppBarComponent } from "@syncfusion/ej2-react-navigations";
 import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
-import { getGeneralPoApproval, insertGeneralPoApproval, insertGeneralPoReject } from "../../serverCommication/ServerPostApi"
+import { getGeneralPoApproval, insertGeneralPoApproval, insertGeneralPoReject, getGeneralpdfapp } from "../../serverCommication/ServerPostApi"
 import { Aggregate, AggregateColumnDirective, AggregateColumnsDirective, AggregateDirective, AggregatesDirective, ColumnDirective, ColumnsDirective, GridComponent, Inject, Resize, Sort, Filter, Group, } from "@syncfusion/ej2-react-grids";
 import moment from "moment";
 import { DialogComponent } from "@syncfusion/ej2-react-popups";
@@ -298,27 +298,20 @@ export default function GeneralPoAprroval() {
         e.preventDefault();
 
         try {
+
             const data = {
                 DOCID: rowData.DOCID
             };
 
-            // const response = await fetch(`${serverIp}/getPoPdf`, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json"
-            //     },
-            //     body: JSON.stringify(data)
-            // });
+            const blob = await getGeneralpdfapp(serverIp, data);
 
-            // if (!response.ok) {
-            //     throw new Error("Failed to fetch PDF");
-            // }
+            // console.log("blob => ", blob)
 
-            // const blob = await response.blob();
+            const fileURL = URL.createObjectURL(blob);
 
-            // const fileURL = window.URL.createObjectURL(blob);
+            window.open(fileURL, "_blank");
 
-            // window.open(fileURL, "_blank"); // new tab la open
+
         } catch (error) {
             console.error("Error opening PDF:", error);
             alert("Unable to open file");
