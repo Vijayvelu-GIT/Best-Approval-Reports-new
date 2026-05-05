@@ -279,10 +279,12 @@ export default function GeneralPoAprroval() {
 
 
     const attachTemplate = (props) => {
-        // if (!props.HASFILE) {
-        //     return <span style={{ color: "gray" }}>No File</span>;
-        // }
 
+        console.log("props => ", props)
+        
+        if (props.HASFILE !== 'Y') {
+            return <span style={{ color: "gray" }}>No File</span>;
+        }
         return (
             <a
                 href="#"
