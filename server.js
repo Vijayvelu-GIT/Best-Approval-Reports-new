@@ -63,6 +63,7 @@ app.post("/api/insertYarnPoApproval", (req, res) => {
 // General Po approval
 
 app.post("/api/getGeneralPoApproval", (req, res) => {
+  // console.log("getGeneralPoApproval api called");
   GeneralBudApproval.getGeneralPoApproval(req.body, res)
 });
 

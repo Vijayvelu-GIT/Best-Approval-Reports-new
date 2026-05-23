@@ -299,7 +299,7 @@ export default function YarnApproval() {
 
                     <div className="left-section">
                         <img src={logo2} alt="logo" className="company-logo" />
-                        <span className="app-title">Yarn Po Approval</span>
+                        <span className="app-title">Yarn PO Approval</span>
                     </div>
 
                     <div className="right-section">

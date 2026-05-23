@@ -192,22 +192,22 @@ export default function Home() {
                     className="dashboard-card card-emerald"
                     onClick={() => navigateTo("PO")}
                 >
-                    PO Approval   ( <span>{generalPoCount}</span>  )
+                   General PO Approval   ( <span>{generalPoCount}</span>  )
                 </div>
 
                 <div
                     className="dashboard-card card-amber"
                     onClick={() => navigateTo("Yarn")}
                 >
-                    Yarn Approval   ( <span>{yarnPoCount}</span>  )
+                    Yarn PO Approval   ( <span>{yarnPoCount}</span>  )
                 </div>
 
-                <div
+                {/* <div
                     className="dashboard-card card-slate"
                     onClick={() => navigateTo("General")}
                 >
-                    General Approval
-                </div>
+                    General Budget Approval
+                </div> */}
 
             </div>
 

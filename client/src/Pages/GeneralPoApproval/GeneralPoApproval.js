@@ -279,9 +279,7 @@ export default function GeneralPoAprroval() {
 
 
     const attachTemplate = (props) => {
-
         console.log("props => ", props)
-        
         if (props.HASFILE !== 'Y') {
             return <span style={{ color: "gray" }}>No File</span>;
         }
@@ -329,7 +327,7 @@ export default function GeneralPoAprroval() {
 
                     <div className="left-section">
                         <img src={logo2} alt="logo" className="company-logo" />
-                        <span className="app-title">General Approval</span>
+                        <span className="app-title">General PO Approval</span>
                     </div>
 
                     <div className="right-section">
