@@ -184,10 +184,10 @@ async function insertFabricApproval(data, res) {
 
 
         const mailSql = `INSERT INTO AXP_MAILJOBS ( SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE,MAILTO,MAILCC CC,'Fabric Order Approved - '||:DOCID ||C.PARTYID,'Dear All,
-        '||CHR(13)||CHR(13)||'Fabric Order Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','','','',
-        'forde',:FORDEMASID ,0,'','','' FROM fordemas A,(select B.MAILTO,B.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
-        B.SCREEN='FABRIC ORDER ENTRY'  and b.ordtype=:FAPPTYPE) B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND  fordemasid= :FORDEMASID AND A.PARTYID=C.PARTYMASID 
-        AND A.ENAME=B.COMPMASID )`;
+        '||CHR(13)||CHR(13)|| 'Fabric Order Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','','','',
+        'forde',:fordemasid ,0,'','','' FROM fordemas A,(select b.MAILTO,b.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
+        B.SCREEN='FABRIC ORDER ENTRY'  and b.ordtype=:fapptype) B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND  fordemasid= :fordemasid AND A.PARTYID=C.PARTYMASID 
+        AND A.ENAME=B.COMPMASID and 1 = :ssno )`;
 
         // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC,'Fabric Order Approved - ' || :DOCID || C.PARTYID,
         // 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Approved For your Reference' || CHR(13) || CHR(13) || CHR(13) ||

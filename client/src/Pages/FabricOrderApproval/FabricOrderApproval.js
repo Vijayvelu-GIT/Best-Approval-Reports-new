@@ -50,26 +50,33 @@ export default function FabricApproval() {
     // console.log(" =>serverIp ",ctx.serverIp)   
 
 
-    // const formatDataForMerge = (data) => {
-    //     let lastDocId = null;
-    //     return data.map(row => {
-    //         const newRow = {
-    //             // ...row,
-    //             ORDVAL_ORG: row.ORDVAL,
-    //             BUDVAL_ORG: row.BUDVAL,
-    //             DIFF_ORG: row.DIFF,
-    //             PRPER_ORG: row.PRPER
-    //         };
-    //         if (row.DOCID === lastDocId) {
-    //             newRow.ORDVAL = null;
-    //             newRow.BUDVAL = null;
-    //             newRow.DIFF = null;
-    //             newRow.PRPER = null;
-    //         }
-    //         lastDocId = row.DOCID;
-    //         return newRow;
-    //     });
-    // };
+    const formatDataForMerge = (data) => {
+
+    let lastDocId = null;
+
+    return data.map((row) => {
+
+        const newRow = {
+            ...row,
+            ORDVAL_ORG: row.ORDVAL,
+            BUDVAL_ORG: row.BUDVAL,
+            DIFF_ORG: row.DIFF,
+            PRPER_ORG: row.PRPER
+        };
+
+        if (row.DOCID === lastDocId) {
+
+            newRow.ORDVAL = "";
+            newRow.BUDVAL = "";
+            newRow.DIFF = "";
+            newRow.PRPER = "";
+        }
+
+        lastDocId = row.DOCID;
+
+        return newRow;
+    });
+};
 
 
 
@@ -86,16 +93,16 @@ export default function FabricApproval() {
 
                 if (result.MESSAGE === 'Success') {
 
-                    // const formattedData = formatDataForMerge(
-                    //     result.data.map(item => ({
-                    //         ...item,
-                    //         DOCDATE: moment(item.DOCDATE).toDate()
-                    //     }))
-                    // );
-                    const formattedData = result.data.map(item => ({
-                        ...item,
-                        DOCDATE: moment(item.DOCDATE).toDate()
-                    }))
+                    const formattedData = formatDataForMerge(
+                        result.data.map(item => ({
+                            ...item,
+                            DOCDATE: moment(item.DOCDATE).toDate()
+                        }))
+                    );
+                    // const formattedData = result.data.map(item => ({
+                    //     ...item,
+                    //     DOCDATE: moment(item.DOCDATE).toDate()
+                    // }))
                     setApprovalData(formattedData);
                 } else {
                     // alert("")
@@ -314,42 +321,51 @@ export default function FabricApproval() {
 
     const groupFooterTemplate = (props) => (
         <span style={{ float: "right", fontWeight: "bold" }}>
-            {props.Sum}
+            {/* {props.Sum} */}
+            {Number(props.Sum).toFixed(2)}
         </span>
     );
 
 
     // const queryCellInfo = (args) => {
 
-    //     // merge only these 4 columns
     //     const mergeFields = ["ORDVAL", "BUDVAL", "DIFF", "PRPER"];
 
     //     if (!mergeFields.includes(args.column.field)) return;
 
     //     const grid = gridRef.current;
-    //     const data = grid.currentViewData;
+
+    //     // IMPORTANT CHANGE
+    //     const data = grid.getCurrentViewRecords();
 
     //     const currentDocId = args.data.DOCID;
     //     const rowIndex = args.rowIndex;
 
-    //     // hide duplicate rows cell
-    //     if (rowIndex > 0 && data[rowIndex - 1].DOCID === currentDocId) {
+    //     // hide duplicate rows
+    //     if (
+    //         rowIndex > 0 &&
+    //         data[rowIndex - 1] &&
+    //         data[rowIndex - 1].DOCID === currentDocId
+    //     ) {
     //         args.cell.style.display = "none";
     //         return;
     //     }
 
-    //     // calculate rowspan count
+    //     // calculate rowspan
     //     let count = 1;
 
     //     for (let i = rowIndex + 1; i < data.length; i++) {
-    //         if (data[i].DOCID === currentDocId) {
+
+    //         if (
+    //             data[i] &&
+    //             data[i].DOCID === currentDocId
+    //         ) {
     //             count++;
     //         } else {
     //             break;
     //         }
     //     }
 
-    //     // apply rowspan
     //     args.cell.rowSpan = count;
     // };
 
@@ -424,8 +440,9 @@ export default function FabricApproval() {
                         showDropArea: false,
                         showGroupedColumn: false
                     }}
-                // queryCellInfo={queryCellInfo}
-                // enableRowSpan={true}
+                    
+                    // queryCellInfo={queryCellInfo}
+                    // enableRowSpan={true}
                 >
                     <ColumnsDirective>
                         <ColumnDirective type="checkbox" width="50" />
@@ -450,7 +467,7 @@ export default function FabricApproval() {
                             <AggregateColumnsDirective>
                                 <AggregateColumnDirective field="DOCDATE" type="Count" groupFooterTemplate={totalLabelTemplate} />
                                 <AggregateColumnDirective field="ORDQTY" type="Sum" groupFooterTemplate={groupFooterTemplate} />
-                                <AggregateColumnDirective field="OLOSSPER" type="Sum" groupFooterTemplate={groupFooterTemplate} />
+                                {/* <AggregateColumnDirective field="OLOSSPER" type="Sum" groupFooterTemplate={groupFooterTemplate} /> */}
                                 <AggregateColumnDirective field="PRODQTY" type="Sum" groupFooterTemplate={groupFooterTemplate} />
                             </AggregateColumnsDirective>
                         </AggregateDirective>
