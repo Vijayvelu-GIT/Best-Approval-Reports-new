@@ -114,6 +114,9 @@ async function insertFabricApproval(data, res) {
 
         const records = data.selectedRecords;
 
+
+        // console.log("records => ", records)
+
         if (!records || records.length === 0) {
             return res.status(400).json({
                 STATUS: false,
@@ -185,9 +188,9 @@ async function insertFabricApproval(data, res) {
 
         const mailSql = `INSERT INTO AXP_MAILJOBS ( SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE,MAILTO,MAILCC CC,'Fabric Order Approved - '||:DOCID ||C.PARTYID,'Dear All,
         '||CHR(13)||CHR(13)|| 'Fabric Order Approved For your Refernce'||CHR (13)|| CHR (13)||CHR (13)||  '**This is system generated mail, pls do not reply**','','','',
-        'forde',:fordemasid ,0,'','','' FROM fordemas A,(select b.MAILTO,b.MAILCC,A.compmasID from compmas a,compmail b where a.compmasid=b.compmasid and 
-        B.SCREEN='FABRIC ORDER ENTRY'  and b.ordtype=:fapptype) B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND  fordemasid= :fordemasid AND A.PARTYID=C.PARTYMASID 
-        AND A.ENAME=B.COMPMASID and 1 = :ssno )`;
+        'forde',:FORDEMASID ,0,'','','' FROM FORDEMAS A,(SELECT B.MAILTO,B.MAILCC,A.COMPMASID FROM COMPMAS A,COMPMAIL B WHERE A.COMPMASID=B.COMPMASID AND 
+        B.SCREEN='FABRIC ORDER ENTRY'  AND B.ORDTYPE=:FAPPTYPE) B,PARTYMAS C WHERE APPLEVEL=MAXLEVEL AND  FORDEMASID= :FORDEMASID AND A.PARTYID=C.PARTYMASID 
+        AND A.ENAME=B.COMPMASID AND 1 = :SSNO )`;
 
         // const mailSql = `INSERT INTO AXP_MAILJOBS (SELECT MAILJOB_SEQ.NEXTVAL, SYSDATE, B.MAILTO, B.MAILCC,'Fabric Order Approved - ' || :DOCID || C.PARTYID,
         // 'Dear All,' || CHR(13) || CHR(13) || 'Fabric Order Approved For your Reference' || CHR(13) || CHR(13) || CHR(13) ||
@@ -207,7 +210,8 @@ async function insertFabricApproval(data, res) {
         const mailBinds = records.map(r => ({
             DOCID: r.DOCID,
             FORDEMASID: r.FORDEMASID,
-            FAPPTYPE: r.FAPPTYPE
+            FAPPTYPE: r.FAPPTYPE,
+            SSNO : 1
         }));
 
         // console.log("mailBinds => ", mailBinds)
@@ -216,7 +220,7 @@ async function insertFabricApproval(data, res) {
 
 
 
-        await connection.commit();
+        // await connection.commit();
 
 
         console.log("All records processed successfully");

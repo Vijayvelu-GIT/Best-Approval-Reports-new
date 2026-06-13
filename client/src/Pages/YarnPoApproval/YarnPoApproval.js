@@ -133,8 +133,13 @@ export default function YarnApproval() {
 
         // console.log("Correct data => ", correctedRecords);
 
+        const selectedRecordsWithSno = selectedRecords.map((row, index) => ({
+            SNO: index + 1,
+            ...row
+        }));
+
         const data = {
-            selectedRecords: selectedRecords,
+            selectedRecords: selectedRecordsWithSno,
             username: ctx.userName
         };
 

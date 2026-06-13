@@ -52,31 +52,31 @@ export default function FabricApproval() {
 
     const formatDataForMerge = (data) => {
 
-    let lastDocId = null;
+        let lastDocId = null;
 
-    return data.map((row) => {
+        return data.map((row) => {
 
-        const newRow = {
-            ...row,
-            ORDVAL_ORG: row.ORDVAL,
-            BUDVAL_ORG: row.BUDVAL,
-            DIFF_ORG: row.DIFF,
-            PRPER_ORG: row.PRPER
-        };
+            const newRow = {
+                ...row,
+                ORDVAL_ORG: row.ORDVAL,
+                BUDVAL_ORG: row.BUDVAL,
+                DIFF_ORG: row.DIFF,
+                PRPER_ORG: row.PRPER
+            };
 
-        if (row.DOCID === lastDocId) {
+            if (row.DOCID === lastDocId) {
 
-            newRow.ORDVAL = "";
-            newRow.BUDVAL = "";
-            newRow.DIFF = "";
-            newRow.PRPER = "";
-        }
+                newRow.ORDVAL = "";
+                newRow.BUDVAL = "";
+                newRow.DIFF = "";
+                newRow.PRPER = "";
+            }
 
-        lastDocId = row.DOCID;
+            lastDocId = row.DOCID;
 
-        return newRow;
-    });
-};
+            return newRow;
+        });
+    };
 
 
 
@@ -160,8 +160,13 @@ export default function FabricApproval() {
 
         // console.log("Correct data => ", correctedRecords);
 
+        const selectedRecordsWithSno = selectedRecords.map((row, index) => ({
+            SNO: index + 1,
+            ...row
+        }));
+
         const data = {
-            selectedRecords: selectedRecords,
+            selectedRecords: selectedRecordsWithSno,
             username: ctx.userName
         };
 
@@ -440,9 +445,9 @@ export default function FabricApproval() {
                         showDropArea: false,
                         showGroupedColumn: false
                     }}
-                    
-                    // queryCellInfo={queryCellInfo}
-                    // enableRowSpan={true}
+
+                // queryCellInfo={queryCellInfo}
+                // enableRowSpan={true}
                 >
                     <ColumnsDirective>
                         <ColumnDirective type="checkbox" width="50" />
