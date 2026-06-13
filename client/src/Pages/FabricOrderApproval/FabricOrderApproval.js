@@ -160,25 +160,43 @@ export default function FabricApproval() {
 
         // console.log("Correct data => ", correctedRecords);
 
-        const selectedRecordsWithSno = selectedRecords.map((row, index) => ({
-            SNO: index + 1,
-            ...row
-        }));
+        const snoMap = {};
+
+        const selectedRecordsWithSno = selectedRecords.map((row, index) => {
+
+            const docId = row.DOCID;
+
+            if (!snoMap[docId]) {
+                snoMap[docId] = 1;
+            }
+
+            const record = {
+                SNO: snoMap[docId],
+                ...row
+            };
+
+            
+            snoMap[docId]++;
+
+            return record;
+        });
+
+        // console.log("Selected Records with SNO => ", selectedRecordsWithSno);
 
         const data = {
             selectedRecords: selectedRecordsWithSno,
             username: ctx.userName
         };
 
-        // console.log("data => ", data)
+        console.log("data => ", data)
 
         insertFabricApproval(serverIp, data).then((result) => {
             if (result.STATUS) {
                 setAppdialogVisible(false);
                 alert(result.MESSAGE);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 100);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 100);
             }
         })
             .catch((error) => {

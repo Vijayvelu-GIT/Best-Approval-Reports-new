@@ -211,12 +211,14 @@ async function insertFabricApproval(data, res) {
             DOCID: r.DOCID,
             FORDEMASID: r.FORDEMASID,
             FAPPTYPE: r.FAPPTYPE,
-            SSNO : 1
+            SSNO : r.SNO
         }));
 
-        // console.log("mailBinds => ", mailBinds)
+        console.log("mailBinds => ", mailBinds)
 
-        await connection.executeMany(mailSql, mailBinds);
+        const result = await connection.executeMany(mailSql, mailBinds);
+
+        console.log("Rows Inserted :", result.rowsAffected);
 
 
 
