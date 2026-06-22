@@ -89,7 +89,7 @@ export default function FabricApproval() {
                     UNAM: ctx.userName
                 }
                 const result = await getFabricApproval(serverIp, data);
-                console.log("Fabric Result:", result);
+                // console.log("Fabric Result:", result);
 
                 if (result.MESSAGE === 'Success') {
 
@@ -188,15 +188,15 @@ export default function FabricApproval() {
             username: ctx.userName
         };
 
-        console.log("data => ", data)
+        // console.log("data => ", data)
 
         insertFabricApproval(serverIp, data).then((result) => {
             if (result.STATUS) {
                 setAppdialogVisible(false);
                 alert(result.MESSAGE);
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 100);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
             }
         })
             .catch((error) => {
@@ -214,7 +214,7 @@ export default function FabricApproval() {
 
     const handleReject = () => {
 
-        console.log("checking")
+        // console.log("checking")
 
         const selectedRecords = gridRef.current.getSelectedRecords();
 
